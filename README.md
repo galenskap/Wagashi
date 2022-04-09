@@ -2,6 +2,11 @@
 
 WIP
 
+Notes pour la V2 :
+- fonctionnalité de kick (lobby_owner uniquement)
+
+
+
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
 This work is licensed under a
