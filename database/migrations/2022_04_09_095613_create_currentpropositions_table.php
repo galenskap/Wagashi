@@ -18,8 +18,8 @@ class CreateCurrentpropositionsTable extends Migration
 
             // foreign keys:
             $table->unsignedBigInteger('game_id');
-            $table->unsignedBigInteger('player_id')->unique();
-            $table->unsignedBigInteger('answer_id')->unique();
+            $table->unsignedBigInteger('player_id');
+            $table->unsignedBigInteger('answer_id');
 
             $table->timestamps();
 
@@ -28,8 +28,8 @@ class CreateCurrentpropositionsTable extends Migration
             $table->foreign('answer_id')->references('id')->on('answers')->onDelete('cascade');
 
             // composite primary key
-            $table->index(['game_id', 'player_id']);
-            $table->primary(['game_id', 'player_id']);
+            $table->index(['game_id', 'player_id', 'answer_id']);
+            $table->primary(['game_id', 'player_id', 'answer_id']);
 
         });
     }
