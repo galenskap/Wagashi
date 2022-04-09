@@ -14,4 +14,18 @@ class Proposition extends Pivot
     protected $table = 'currentpropositions';
 
 
+    // Relationships
+    // One
+    public function game()
+    {
+        return $this->belongsTo(Game::class);
+    }
+    public function player()
+    {
+        return $this->belongsTo(Player::class);
+    }
+    public function answer()
+    {
+        return $this->belongsTo(Answer::class);
+    }
 }
