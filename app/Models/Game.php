@@ -13,15 +13,15 @@ class Game extends Model
     // One
     public function owner()
     {
-        return $this->hasOne(Player::class, 'id', 'lobby_owner');
+        return $this->belongsTo(Player::class, 'lobby_owner');
     }
     public function currentDealer()
     {
-        return $this->hasOne(Player::class, 'id', 'current_dealer');
+        return $this->belongsTo(Player::class, 'current_dealer');
     }
     public function currentQuestion()
     {
-        return $this->hasOne(Question::class, 'id', 'current_question');
+        return $this->belongsTo(Question::class, 'current_question');
     }
 
     // Many
