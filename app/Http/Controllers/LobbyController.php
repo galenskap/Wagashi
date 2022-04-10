@@ -88,9 +88,10 @@ class LobbyController extends Controller
         // CardsCreation::dispatch($game, $cardpack)->delay(now()->addMinutes(1));
         $this->cardsGeneration($game, $cardpack);
 
-        // Return the game slug and player's token
+        // Return the game slug and player's token and player's id
         return response()->json([
             "slug" => $game->slug,
+            "player_id" => $player->id,
             "token" => $player->token
         ]);
     }
@@ -116,6 +117,7 @@ class LobbyController extends Controller
 
         // Return the token
         return response()->json([
+            'player' => $player->id,
             "token" => $player->token
         ]);
     }
