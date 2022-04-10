@@ -25,12 +25,15 @@ use App\Http\Controllers\LobbyController;
 
 // Fetch a list of all available cardpacks names
 Route::get('/cardpacks', [LobbyController::class, 'getCardpacks']);
-// Check if given slug matches with a game session
-Route::get('/check-slug', [LobbyController::class, 'isSlugValid']);
 // Create a new game session (lobby)
 Route::post('/new-game', [LobbyController::class, 'newGame']);
-// Register a new user to the game session
-Route::post('/new-player', [LobbyController::class, 'newPlayer']);
+
+Route::group(['middleware' => 'lobby'], function () {
+    // Check if given slug matches with a valid game session (neither already full nor finished)
+    Route::get('/check-game', [LobbyController::class, 'isGameValid']);
+    // Register a new user to the game session
+    Route::post('/new-player', [LobbyController::class, 'newPlayer']);
+});
 
 
 // GAMEPLAY
@@ -38,3 +41,4 @@ Route::post('/new-player', [LobbyController::class, 'newPlayer']);
 // from now on you must be registered to the game session
 Route::group(['middleware' => 'token'], function () {
 });
+

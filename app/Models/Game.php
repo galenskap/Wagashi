@@ -9,6 +9,8 @@ class Game extends Model
 {
     use HasFactory;
 
+    const MAX_PLAYERS = 10;
+
     // Relationships
     // One
     public function owner()

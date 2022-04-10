@@ -50,12 +50,9 @@ class LobbyController extends Controller
      * @param Request $request
      * @return json
      */
-    public function isSlugValid(Request $request)
+    public function isGameValid(Request $request)
     {
-        // Validate fields
-        $request->validate([
-            'gameslug' => 'required|string|exists:games,slug',
-        ]);
+        // the middleware CheckGameLobby already checks if the game session exists and is valid
         return response()->json(true);
     }
 

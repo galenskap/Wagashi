@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Game;
-use App\Player;
+use App\Models\Game;
+use App\Models\Player;
 
 class CheckToken
 {
