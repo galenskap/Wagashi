@@ -9,6 +9,8 @@ class Player extends Model
 {
     use HasFactory;
 
+    const MAX_CARDS = 10;
+
     /**
      * The model's default values for attributes.
      *
@@ -37,5 +39,26 @@ class Player extends Model
     public function answers()
     {
         return $this->hasMany(Answer::class, 'owner_id', 'id');
+    }
+
+    public function drawCards()
+    {
+        // Get current player number of cards
+        $nbCards = $this->answers()->count();
+
+        // Draw cards if the current player has less than 10 cards
+        if ($nbCards < self::MAX_CARDS) {
+
+            $cards = $this->game->answers()->where('status', 'pile')->inRandomOrder()->take(self::MAX_CARDS - $nbCards)->get();
+
+            foreach($cards as $card) {
+                $card->status = 'hand';
+                $card->player()->associate($this);
+                $card->save();
+            }
+        }
+
+        // Return the player's cards
+        return $this->answers()->get();
     }
 }

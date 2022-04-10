@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\GameController;
 use App\Http\Controllers\LobbyController;
 
 /*
@@ -40,5 +41,6 @@ Route::group(['middleware' => 'lobby'], function () {
 
 // from now on you must be registered to the game session
 Route::group(['middleware' => 'token'], function () {
+    Route::get('/launch-game', [GameController::class, 'launchGame']);
 });
 

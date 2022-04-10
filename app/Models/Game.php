@@ -10,6 +10,7 @@ class Game extends Model
     use HasFactory;
 
     const MAX_PLAYERS = 10;
+    const MIN_PLAYERS = 3;
 
     // Relationships
     // One
@@ -57,6 +58,49 @@ class Game extends Model
         return $this->answers()->where('status', 'pile')->get();
     }
 
+    /**
+     * Draw a question card and
+     *
+     * @return Question
+     *
+     */
+    public function drawQuestionCard()
+    {
+        $question = $this->getAvailableQuestions()->random();
+        $question->status = false;
+        $this->currentQuestion()->associate($question);
+
+        $question->save();
+        $this->save();
+
+        return $question;
+    }
+
+    /**
+     * Draw a dealer
+     *
+     * @return Player
+     *
+     */
+    public function drawDealer()
+    {
+        if($this->current_dealer == null) {
+            $dealer = $this->players()->inRandomOrder()->first();
+            $this->currentDealer()->associate($dealer);
+        } else {
+            // Get the next player by id, if the current dealer is the last player, get the first one
+            $dealer = $this->players()->where('id', '>', $this->current_dealer)->first();
+            if($dealer == null) {
+                $dealer = $this->players()->first();
+            }
+            $this->currentDealer()->associate($dealer);
+
+        }
+
+        $this->save();
+
+        return $dealer;
+    }
 
 
 }
