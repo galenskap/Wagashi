@@ -54,4 +54,21 @@ class GameController extends Controller
 
 
     }
+
+    /**
+     * Return the global game data to the frontend
+     */
+    public function getGameData(Request $request)
+    {
+        $player = $request->player->load('answers');
+        $game = $request->game->load('players', 'currentQuestion', 'currentDealer', 'propositions');
+
+        return response()->json([
+            'player' => $player,
+            'game' => $game,
+        ]);
+
+
+
+    }
 }

@@ -10,6 +10,8 @@ class Answer extends Model
     use HasFactory;
 
     protected $fillable = ['text', 'status', 'owner_id'];
+    protected $hidden = ['created_at', 'updated_at', 'status', 'owner_id', 'game_id'];
+
 
 
     /**

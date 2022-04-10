@@ -41,6 +41,7 @@ Route::group(['middleware' => 'lobby'], function () {
 
 // from now on you must be registered to the game session
 Route::group(['middleware' => 'token'], function () {
+    Route::get('/get-data', [GameController::class, 'getGameData']);
     Route::get('/launch-game', [GameController::class, 'launchGame']);
 });
 

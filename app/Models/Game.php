@@ -12,6 +12,9 @@ class Game extends Model
     const MAX_PLAYERS = 10;
     const MIN_PLAYERS = 3;
 
+    protected $hidden = ['created_at', 'updated_at'];
+
+
     // Relationships
     // One
     public function owner()

@@ -11,6 +11,8 @@ class Player extends Model
 
     const MAX_CARDS = 10;
 
+    protected $hidden = ['token', 'created_at', 'updated_at', 'game_id'];
+
     /**
      * The model's default values for attributes.
      *
@@ -59,6 +61,6 @@ class Player extends Model
         }
 
         // Return the player's cards
-        return $this->answers()->get();
+        return $this->answers;
     }
 }
