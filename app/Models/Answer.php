@@ -9,6 +9,9 @@ class Answer extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['text', 'status', 'owner_id'];
+
+
     /**
      * The model's default values for attributes.
      *

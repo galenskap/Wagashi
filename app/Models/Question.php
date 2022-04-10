@@ -9,6 +9,8 @@ class Question extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['text', 'status'];
+
     /**
      * The model's default values for attributes.
      *

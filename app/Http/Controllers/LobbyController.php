@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 
 use App\Models\Game;
 use App\Models\Player;
+use App\Jobs\CardsCreation;
 use App\CustomHelper;
 
 class LobbyController extends Controller
@@ -30,7 +31,8 @@ class LobbyController extends Controller
     /**
      * Check if given cardpack really exists
      *
-     * @return json
+     * @param  string  $cardpack
+     * @return boolean
      */
     public function isCardpackValid($cardpack)
     {
@@ -45,6 +47,7 @@ class LobbyController extends Controller
     /**
      * Check if given slug matches with a game session
      *
+     * @param Request $request
      * @return json
      */
     public function isSlugValid(Request $request)
@@ -59,6 +62,7 @@ class LobbyController extends Controller
     /**
      * Handle new game session (lobby) creation request
      *
+     * @param Request $request
      * @return json
      */
     public function newGame(Request $request)
@@ -79,8 +83,10 @@ class LobbyController extends Controller
         $game->owner()->associate($player);
         $game->save();
 
-        // TODO : create cards form cardpack!
-        // $this->isCardpackValid($request->cardpack) ? $request->cardpack : 'default';
+        $cardpack = $this->isCardpackValid($request->cardpack) ? $request->cardpack : 'default';
+        // TODO : queue this job (php 8.0)
+        // CardsCreation::dispatch($game, $cardpack)->delay(now()->addMinutes(1));
+        $this->cardsGeneration($game, $cardpack);
 
         // Return the game slug and player's token
         return response()->json([
@@ -92,6 +98,7 @@ class LobbyController extends Controller
     /**
      * Handle new player creation request
      *
+     * @param  Request $request
      * @return json
      */
     public function newPlayer(Request $request)
@@ -115,6 +122,8 @@ class LobbyController extends Controller
 
     /**
      * Register a new game session (lobby)
+     *
+     * @param int $score_goal
      * @return Game
      */
     public function createGame(int $score_goal)
@@ -133,6 +142,8 @@ class LobbyController extends Controller
 
     /**
      * Register a new player
+     * @param string $pseudo
+     * @param Game $game
      * @return Player
      */
     public function createPlayer($pseudo, $game)
@@ -154,5 +165,43 @@ class LobbyController extends Controller
         $player->save();
 
         return $player;
+    }
+
+    /**
+     * Generate cards for a given game
+     * @param Game $game
+     * @param string $cardpack
+     *
+     * @return void
+     */
+    public function cardsGeneration(Game $game, $cardpack)
+    {
+        // get corresponding files from storage dir
+        $questions_txt = Storage::get('cardpacks/' . $cardpack . '/questions.txt');
+        $answers_txt = Storage::get('cardpacks/' . $cardpack . '/answers.txt');
+        // read txt file
+        $questions = preg_split("/\r\n|\n|\r/", $questions_txt);
+        $answers = preg_split("/\r\n|\n|\r/", $answers_txt);
+
+        // Create questions and answers
+        foreach ($questions as $key => $question) {
+            if (strlen($question)) {
+                $game->questions()->create([
+                    'text' => $question,
+                    'status' => 1,
+                ]);
+            }
+        }
+
+        foreach ($answers as $key => $answer) {
+            if (strlen($answer)) {
+                $game->answers()->create([
+                    'text' => $answer,
+                    'status' => 'pile',
+                ]);
+            }
+        }
+
+
     }
 }
