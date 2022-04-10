@@ -36,7 +36,7 @@ class CheckToken
             return response(['The token contains wrong data'], 403);
         }
 
-        $request->attributes->add([
+        $request->merge([
             'game' => $game,
             'player' => $player,
         ]);

@@ -152,6 +152,7 @@ class LobbyController extends Controller
         $player->pseudo = (string)$pseudo;
         $player->game()->associate($game);
         $player->current_score = 0;
+        $player->save();
 
         // Create and return the player token
         $token = [
