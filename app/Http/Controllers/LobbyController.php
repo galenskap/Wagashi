@@ -47,14 +47,13 @@ class LobbyController extends Controller
      *
      * @return json
      */
-    public function isSlugValid($gameslug)
+    public function isSlugValid(Request $request)
     {
-        // Check if slug exists
-        if (Game::where('slug', $gameslug)->exists()) {
-            return response()->json(true);
-        } else {
-            return response()->json(false);
-        }
+        // Validate fields
+        $request->validate([
+            'gameslug' => 'required|string|exists:games,slug',
+        ]);
+        return response()->json(true);
     }
 
     /**
@@ -64,31 +63,30 @@ class LobbyController extends Controller
      */
     public function newGame(Request $request)
     {
-        // Check if request contains all required fields
-        // And do fields validation (pseudo length is at least 2 characters)
-        if (!$request->has('cardpack') || !$request->has('owner_pseudo') || !strlen($request->owner_pseudo) > 2 || !$request->has('score_goal')) {
-            // todo : return useful errors
-            return response()->json(false);
-        } else {
-            // create a new game
-            $game = $this->createGame((int)$request->score_goal);
-            // create a new player
-            $player = $this->createPlayer((string)$request->owner_pseudo, $game);
+        // Fields validation
+        $request->validate([
+            'cardpack' => 'required|string',
+            'owner_pseudo' => 'required|string|min:1|max:40',
+            'score_goal' => 'required|int|min:1|max:20'
+        ]);
 
-            // then, make him lobby_owner
-            $game->owner()->associate($player);
-            $game->save();
+        // Create a new game
+        $game = $this->createGame((int)$request->score_goal);
+        // Create a new player
+        $player = $this->createPlayer((string)$request->owner_pseudo, $game);
 
-            // TODO : create cards form cardpack!
-            // $this->isCardpackValid($request->cardpack) ? $request->cardpack : 'default';
+        // Then, make him lobby_owner
+        $game->owner()->associate($player);
+        $game->save();
 
-            // Return the game slug
-            return response()->json([
-                "slug" => $game->slug,
-                "game_id" => $game->id
-            ]);
-        }
+        // TODO : create cards form cardpack!
+        // $this->isCardpackValid($request->cardpack) ? $request->cardpack : 'default';
 
+        // Return the game slug and player's token
+        return response()->json([
+            "slug" => $game->slug,
+            "token" => $player->token
+        ]);
     }
 
     /**
@@ -98,9 +96,21 @@ class LobbyController extends Controller
      */
     public function newPlayer(Request $request)
     {
-        // Check if request contains all required fields
-        // Do fields validation (pseudo length is at least 2 characters)
-        // $player = $this->createPlayer((string)$request->owner_pseudo, $game->id);
+        // Validate fields
+        $request->validate([
+            'gameslug' => 'required|string|exists:games,slug',
+            'pseudo' => 'required|min:1|max:40'
+        ]);
+
+        // Load the game
+        $game = Game::where('slug', $request->gameslug)->first();
+        // Create a new player
+        $player = $this->createPlayer((string)$request->pseudo, $game);
+
+        // Return the token
+        return response()->json([
+            "token" => $player->token
+        ]);
     }
 
     /**
@@ -127,10 +137,20 @@ class LobbyController extends Controller
      */
     public function createPlayer($pseudo, $game)
     {
+        // Create player
         $player = new Player;
         $player->pseudo = (string)$pseudo;
         $player->game()->associate($game);
         $player->current_score = 0;
+
+        // Create and return the player token
+        $token = [
+            'player' => $player->id,
+            'game' => $game->id,
+        ];
+        $token = encrypt($token);
+
+        $player->token = $token;
         $player->save();
 
         return $player;

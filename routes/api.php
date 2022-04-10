@@ -26,11 +26,11 @@ use App\Http\Controllers\LobbyController;
 // Fetch a list of all available cardpacks names
 Route::get('/cardpacks', [LobbyController::class, 'getCardpacks']);
 // Check if given slug matches with a game session
-Route::get('/check-slug/{gameslug}', [LobbyController::class, 'isSlugValid']);
+Route::get('/check-slug', [LobbyController::class, 'isSlugValid']);
 // Create a new game session (lobby)
 Route::post('/new-game', [LobbyController::class, 'newGame']);
 // Register a new user to the game session
-Route::post('/new-player/{gameslug}', [LobbyController::class, 'newPlayer']);
+Route::post('/new-player', [LobbyController::class, 'newPlayer']);
 
 
 // GAMEPLAY
