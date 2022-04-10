@@ -34,3 +34,7 @@ Route::post('/new-player', [LobbyController::class, 'newPlayer']);
 
 
 // GAMEPLAY
+
+// from now on you must be registered to the game session
+Route::group(['middleware' => 'token'], function () {
+});
