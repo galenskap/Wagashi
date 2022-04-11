@@ -131,6 +131,6 @@ class GameController extends Controller
         }
 
         // Check if all players have sent their propositions
-        CheckPropositions::dispatch();
+        CheckPropositions::dispatch($game->id);
     }
 }
