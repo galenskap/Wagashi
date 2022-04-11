@@ -44,5 +44,6 @@ Route::group(['middleware' => 'token'], function () {
     Route::get('/get-data', [GameController::class, 'getGameData']);
     Route::get('/launch-game', [GameController::class, 'launchGame']);
     Route::post('/send-proposition', [GameController::class, 'sendProposition']);
+    Route::post('/send-dealer-choice', [GameController::class, 'sendDealerChoice']);
 });
 

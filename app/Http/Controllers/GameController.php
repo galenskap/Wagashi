@@ -38,13 +38,7 @@ class GameController extends Controller
         }
 
         // Draw random 10 answer cards for each player
-        $players = $game->players;
-        foreach ($players as $player) {
-            // Draw cards
-            $playerCards = $player->drawCards();
-
-            // TODO : Broadcast cards to player
-        }
+        $game->drawPlayersCards();
 
         // Draw a question card
         $questionCard = $game->drawQuestionCard();
@@ -137,5 +131,56 @@ class GameController extends Controller
 
         // Check if all players have sent their propositions
         CheckPropositions::dispatch($game->id);
+    }
+
+    /**
+     * Handle dealer's choice
+     * @param Request $request
+     */
+    public function sendDealerChoice(Request $request)
+    {
+        $player = $request->player;
+        $game = $request->game;
+
+        // fields validation
+        $request->validate([
+            'player_id' => 'required|exists:players,id',
+        ]);
+
+        // Check if the player is the current dealer
+        if ($player != $game->currentDealer) {
+            return response()->json(array(
+                'code' => 403,
+                'message' => 'You are not the current dealer',
+            ), 403);
+        }
+
+        // Check if the chosen player actually belongs to the same game
+        $chosenPlayer = $game->players()->find($request->player_id);
+        if (!$chosenPlayer) {
+            return response()->json(array(
+                'code' => 403,
+                'message' => 'The chosen player does not belong to this game',
+            ), 403);
+        }
+
+        // Increment the winner's score
+        $chosenPlayer->current_score++;
+        $chosenPlayer->save();
+
+        // TODO: broadcast the choice to the players
+
+        // Check if the game is over (score_goal reached)
+        if (!$game->isThereAWinner()) {
+
+            // if not, discard cards and draw a new question card & dealer
+            $game->discardAllPropositions();
+            $question = $game->drawQuestionCard();
+            $dealer = $game->drawDealer();
+            // TODO: broadcast the new question card and dealer to the players
+
+            // Draw enough cards to fill all players hands
+            $game->drawPlayersCards();
+        }
     }
 }

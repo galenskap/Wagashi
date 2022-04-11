@@ -107,6 +107,20 @@ class Game extends Model
         return $dealer;
     }
 
+    /**
+     * Draw each player's cards
+     */
+    public function drawPlayersCards()
+    {
+        $players = $this->players;
+        foreach ($players as $player) {
+            // Draw cards
+            $playerCards = $player->drawCards();
+
+            // TODO : Broadcast cards to player
+        }
+    }
+
 
      /**
      * Generate cards for a given game
@@ -185,5 +199,30 @@ class Game extends Model
             ->groupBy('player_id');
 
         return $propositions;
+    }
+
+    /**
+     * Check if the game is over (score_goal reached by one player)
+     * @return boolean
+     */
+    public function isThereAWinner()
+    {
+        $winner = $this->players()->where('current_score', '>=', $this->score_goal)->first();
+        return $winner ?? false;
+    }
+
+    /**
+     * Discard all cards that were in the currentpropositions table
+     */
+    public function discardAllPropositions()
+    {
+        foreach ($this->propositions as $proposition) {
+            // remove answer's owner
+            $proposition->answer->player()->dissociate();
+            $proposition->answer->status = 'discarded';
+            $proposition->answer->save();
+            // then, remove all game's propositions
+            Proposition::where('game_id', $this->id)->delete();
+        }
     }
 }

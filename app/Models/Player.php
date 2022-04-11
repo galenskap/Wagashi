@@ -54,6 +54,8 @@ class Player extends Model
         // Get current player number of cards
         $nbCards = $this->answers()->count();
 
+        // TODO: check if there are enough cards left in the pile
+
         // Draw cards if the current player has less than 10 cards
         if ($nbCards < self::MAX_CARDS) {
 
