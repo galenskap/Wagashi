@@ -31,10 +31,10 @@ class CheckPropositions implements ShouldQueue
      */
     public function handle()
     {
-        $nbPlayersPlayed = $this->game->checkPropositions();
+        $nbPlayersPlayed = $this->game->checkNumberOfPropositions();
         // TODO : Broadcast to general the number of players who played
 
-        if ($this->game->checkPropositions()) {
+        if ($this->game->areAllPropositionsSent()) {
             // TODO: broadcast to general the propositions
         }
     }

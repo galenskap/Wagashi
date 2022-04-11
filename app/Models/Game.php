@@ -160,7 +160,7 @@ class Game extends Model
      *
      * @return boolean
      */
-    public function checkPropositions()
+    public function areAllPropositionsSent()
     {
         $nbPlayerHavingSentPropositions = $this->checkNumberOfPropositions();
         if ($nbPlayerHavingSentPropositions == ($this->players()->count() - 1)) {
