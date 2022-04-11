@@ -164,6 +164,11 @@ class LobbyController extends Controller
         $player->token = $token;
         $player->save();
 
+        // check if game is launched ; if so : draw cards for this new player
+        if ($game->currentDealer) {
+            $player->drawCards();
+        }
+
         return $player;
     }
 

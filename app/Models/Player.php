@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Proposition;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Player extends Model
 {
@@ -42,6 +43,11 @@ class Player extends Model
     {
         return $this->hasMany(Answer::class, 'owner_id', 'id');
     }
+    public function propositions()
+    {
+        return $this->hasMany(Proposition::class, 'player_id', 'id');
+    }
+
 
     public function drawCards()
     {

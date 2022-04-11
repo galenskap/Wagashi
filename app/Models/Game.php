@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -141,7 +142,32 @@ class Game extends Model
             }
         }
 
+    }
 
+    /**
+     * Check how many players have sent their propositions
+     *
+     * @return boolean
+     */
+    public function checkNumberOfPropositions()
+    {
+        $nbPlayerHavingSentPropositions = DB::table('currentpropositions')->where('game_id', $this->id)->groupBy('player_id')->count();
+        return $nbPlayerHavingSentPropositions;
+    }
+
+     /**
+     * Check if all players have sent their propositions
+     *
+     * @return boolean
+     */
+    public function checkPropositions()
+    {
+        $nbPlayerHavingSentPropositions = $this->checkNumberOfPropositions();
+        if ($nbPlayerHavingSentPropositions == ($this->players()->count() - 1)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
