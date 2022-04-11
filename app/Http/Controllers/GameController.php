@@ -63,11 +63,16 @@ class GameController extends Controller
     public function getGameData(Request $request)
     {
         $player = $request->player->load('answers');
-        $game = $request->game->load('players', 'currentQuestion', 'currentDealer', 'propositions');
+        $game = $request->game->load('players', 'currentQuestion', 'currentDealer');
+
+        if($game->areAllPropositionsSent()) {
+            $propositions = $game->getAllPropositions();
+        }
 
         return response()->json([
             'player' => $player,
             'game' => $game,
+            'propositions' => $propositions ?? null,
         ]);
 
 

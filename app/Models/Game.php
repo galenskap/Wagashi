@@ -151,7 +151,7 @@ class Game extends Model
      */
     public function checkNumberOfPropositions()
     {
-        $nbPlayerHavingSentPropositions = DB::table('currentpropositions')->where('game_id', $this->id)->groupBy('player_id')->count();
+        $nbPlayerHavingSentPropositions = DB::table('currentpropositions')->where('game_id', $this->id)->get()->groupBy('player_id')->count();
         return $nbPlayerHavingSentPropositions;
     }
 
@@ -163,6 +163,7 @@ class Game extends Model
     public function areAllPropositionsSent()
     {
         $nbPlayerHavingSentPropositions = $this->checkNumberOfPropositions();
+
         if ($nbPlayerHavingSentPropositions == ($this->players()->count() - 1)) {
             return true;
         } else {
@@ -170,4 +171,19 @@ class Game extends Model
         }
     }
 
+    /**
+     * Get all the propositions for the current game, grouped by player
+     * @return array
+     */
+    public function getAllPropositions()
+    {
+        $propositions = DB::table('currentpropositions')
+            ->join('answers', 'currentpropositions.answer_id', '=', 'answers.id')
+            ->where('currentpropositions.game_id', $this->id)
+            ->select('currentpropositions.player_id', 'answers.text', 'currentpropositions.answer_id', 'currentpropositions.order')
+            ->get()
+            ->groupBy('player_id');
+
+        return $propositions;
+    }
 }
