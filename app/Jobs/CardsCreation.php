@@ -13,6 +13,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Support\Facades\Log;
+
 
 class CardsCreation implements ShouldQueue
 {
@@ -26,9 +28,9 @@ class CardsCreation implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Game $game, string $cardpack)
+    public function __construct(int $game_id, string $cardpack)
     {
-        $this->game = $game;
+        $this->game = Game::find($game_id);
         $this->cardpack = $cardpack;
     }
 
@@ -39,16 +41,7 @@ class CardsCreation implements ShouldQueue
      */
     public function handle()
     {
-        // get corresponding files from storage dir
-        //$questions_txt = Storage::get('cardpacks/' . $this->cardpack . '/questions.txt');
-        //$answers_txt = Storage::get('cardpacks/' . $this->cardpack . '/answers.txt');
-        Log::debug('$questions_txt');
-
-        // read txt file
-        //$questions = explode("\n", $questions_txt);
-        //$answers = explode("\n", $answers_txt);
-
-        // create questions
-        return true;
+        $this->game->cardsGeneration($this->cardpack);
+        // TODO : Broadcast to owner that cards are ready
     }
 }

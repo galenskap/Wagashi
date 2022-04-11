@@ -81,9 +81,9 @@ class LobbyController extends Controller
         $game->save();
 
         $cardpack = $this->isCardpackValid($request->cardpack) ? $request->cardpack : 'default';
-        // TODO : queue this job (php 8.0)
-        // CardsCreation::dispatch($game, $cardpack)->delay(now()->addMinutes(1));
-        $this->cardsGeneration($game, $cardpack);
+        // Queue a job to generate cards
+        CardsCreation::dispatch($game->id, $cardpack);
+
 
         // Return the game slug and player's token and player's id
         return response()->json([
@@ -167,41 +167,5 @@ class LobbyController extends Controller
         return $player;
     }
 
-    /**
-     * Generate cards for a given game
-     * @param Game $game
-     * @param string $cardpack
-     *
-     * @return void
-     */
-    public function cardsGeneration(Game $game, $cardpack)
-    {
-        // get corresponding files from storage dir
-        $questions_txt = Storage::get('cardpacks/' . $cardpack . '/questions.txt');
-        $answers_txt = Storage::get('cardpacks/' . $cardpack . '/answers.txt');
-        // read txt file
-        $questions = preg_split("/\r\n|\n|\r/", $questions_txt);
-        $answers = preg_split("/\r\n|\n|\r/", $answers_txt);
 
-        // Create questions and answers
-        foreach ($questions as $key => $question) {
-            if (strlen($question)) {
-                $game->questions()->create([
-                    'text' => $question,
-                    'status' => 1,
-                ]);
-            }
-        }
-
-        foreach ($answers as $key => $answer) {
-            if (strlen($answer)) {
-                $game->answers()->create([
-                    'text' => $answer,
-                    'status' => 'pile',
-                ]);
-            }
-        }
-
-
-    }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Game extends Model
 {
@@ -105,5 +106,42 @@ class Game extends Model
         return $dealer;
     }
 
+
+     /**
+     * Generate cards for a given game
+     * @param string $cardpack
+     *
+     * @return void
+     */
+    public function cardsGeneration($cardpack)
+    {
+        // get corresponding files from storage dir
+        $questions_txt = Storage::get('cardpacks/' . $cardpack . '/questions.txt');
+        $answers_txt = Storage::get('cardpacks/' . $cardpack . '/answers.txt');
+        // read txt file
+        $questions = preg_split("/\r\n|\n|\r/", $questions_txt);
+        $answers = preg_split("/\r\n|\n|\r/", $answers_txt);
+
+        // Create questions and answers
+        foreach ($questions as $key => $question) {
+            if (strlen($question)) {
+                $this->questions()->create([
+                    'text' => $question,
+                    'status' => 1,
+                ]);
+            }
+        }
+
+        foreach ($answers as $key => $answer) {
+            if (strlen($answer)) {
+                $this->answers()->create([
+                    'text' => $answer,
+                    'status' => 'pile',
+                ]);
+            }
+        }
+
+
+    }
 
 }
