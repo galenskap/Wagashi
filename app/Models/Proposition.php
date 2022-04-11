@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Proposition extends Pivot
 {
+
+    protected $hidden = ['created_at', 'updated_at', 'answer_id', 'game_id'];
+
     /**
      * The table associated with the model.
      *

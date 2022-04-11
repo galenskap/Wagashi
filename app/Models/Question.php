@@ -9,6 +9,11 @@ class Question extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['text', 'status'];
+    protected $hidden = ['created_at', 'updated_at', 'status', 'game_id'];
+
+
+
     /**
      * The model's default values for attributes.
      *
