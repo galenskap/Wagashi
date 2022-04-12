@@ -1,0 +1,17 @@
+:root {
+    --mint-green: #82f986ff;
+    --blush: #e75a7cff;
+    --raisin-black: #262730ff;
+    --nickel: #6d6c61ff;
+    --champagne-pink: #ffe5d4ff;
+}
+
+
+body {
+    background: var(--raisin-black);
+}
+html,
+body,
+#app {
+    height: 100%;
+}

@@ -1,0 +1,23 @@
+<template>
+  <main>
+    <router-view v-slot="{ Component }">
+        <transition name="slide" mode="out-in">
+            <component :is="Component" />
+        </transition>
+    </router-view>
+  </main>
+</template>
+
+<script>
+
+export default {
+  name: 'App',
+  components: {
+    // MainComponent
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
