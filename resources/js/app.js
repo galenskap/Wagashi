@@ -2,7 +2,7 @@ require('./bootstrap');
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router.js';
-import "minireset.css";
+// import "minireset.css";
 
 
 const app = createApp(App);

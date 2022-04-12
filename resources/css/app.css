@@ -36,35 +36,62 @@ main,
     min-height: 100vh;
 }
 
+img {
+    max-width: 100%;
+}
 
-.logo-text svg {
+.logo-text svg,
+.logo-line svg {
     fill: var(--blush);
 }
-.logo-text.dark svg {
+.dark svg {
     fill: var(--raisin-black);
 }
-.logo-text.light svg {
+.light svg {
     fill: var(--champagne-pink);
 }
-.logo-text.green svg {
+.green svg {
     fill: var(--mint-green);
 }
 
+h1,
+.blush {
+    color: var(--blush);
+}
+.dark {
+    color: var(--raisin-black);
+}
+
+.light {
+    color: var(--champagne-pink);
+}
+
+.green {
+    color: var(--mint-green);
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+
 .container {
-    padding: 0.5rem;
+    padding: 0.7rem;
 }
 
 .button {
     display: inline-block;
     padding: 0.7rem 1rem;
     border-radius: 0.25rem;
-    font-size: 1rem;
+    font-size: 1.3rem;
     font-weight: bold;
     text-decoration: none;
     border: none;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     text-align: center;
+    width: 100%;
 }
 
 .button.blush {
@@ -74,4 +101,49 @@ main,
 
 .button:hover {
     color: var(--raisin-black);
+}
+
+.button.green {
+    color: var(--raisin-black);
+    background: var(--mint-green);
+}
+
+.button.green:hover {
+    color: var(--mint-green);
+    background: var(--raisin-black);
+}
+
+.form-group label {
+    display: block;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group input,
+.form-group select {
+    border: 2px solid var(--blush);
+    padding: .7rem 0.5rem;
+    border-radius: .25rem;
+    width: 100%;
+    font-family: "wagashi", sans-serif;
+    font-size: 1.3rem;
+    appearance: none;
+    color: var(--nickel);
+    position: relative;
+    background: var(--champagne-pink);
+
+}
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }
