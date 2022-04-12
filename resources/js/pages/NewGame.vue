@@ -27,7 +27,7 @@
 
 
 <script setup>
-    import { reactive, ref } from "@vue/reactivity";
+    import { ref } from "@vue/reactivity";
     import Header from "../components/Header.vue";
 
     /**
@@ -50,5 +50,8 @@ header {
 }
 .button {
     margin-top: 2rem;
+}
+.button:hover {
+    box-shadow:inset 0 0 0 2px  var(--mint-green);
 }
 </style>
