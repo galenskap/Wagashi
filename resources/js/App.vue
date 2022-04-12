@@ -1,23 +1,20 @@
 <template>
   <main>
-    <router-view v-slot="{ Component }">
+    <div class="container">
+      <router-view v-slot="{ Component }">
         <transition name="slide" mode="out-in">
-            <component :is="Component" />
+          <component :is="Component" />
         </transition>
-    </router-view>
+      </router-view>
+    </div>
   </main>
 </template>
 
 <script>
-
 export default {
-  name: 'App',
+  name: "App",
   components: {
     // MainComponent
-  }
-}
+  },
+};
 </script>
-
-<style scoped>
-
-</style>

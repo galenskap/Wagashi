@@ -6,12 +6,72 @@
     --champagne-pink: #ffe5d4ff;
 }
 
+@font-face {
+    font-family: "wagashi";
+    src: url("fonts/FilsonPro-Regular.woff2") format('woff2');
+}
+
+@font-face {
+    font-family: "wagashi";
+    src: url("fonts/FilsonPro-Bold.woff2") format('woff2');
+    font-weight: bold;
+}
+
+* {
+    box-sizing: border-box;
+}
 
 body {
+    font-family: "wagashi", sans-serif;
+    color: var(--raisin-black);
+}
+#app {
     background: var(--raisin-black);
 }
 html,
 body,
-#app {
-    height: 100%;
+#app,
+main,
+.container {
+    min-height: 100vh;
+}
+
+
+.logo-text svg {
+    fill: var(--blush);
+}
+.logo-text.dark svg {
+    fill: var(--raisin-black);
+}
+.logo-text.light svg {
+    fill: var(--champagne-pink);
+}
+.logo-text.green svg {
+    fill: var(--mint-green);
+}
+
+.container {
+    padding: 0.5rem;
+}
+
+.button {
+    display: inline-block;
+    padding: 0.7rem 1rem;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-align: center;
+}
+
+.button.blush {
+    color: var(--champagne-pink);
+    background: var(--blush);
+}
+
+.button:hover {
+    color: var(--raisin-black);
 }

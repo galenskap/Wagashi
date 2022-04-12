@@ -1,7 +1,7 @@
-import Home from './components/Home.vue';
-import NewGame from './components/NewGame.vue';
-import Join from './components/Join.vue';
-import Error404 from './components/Error404.vue';
+import Home from './pages/Home.vue';
+import NewGame from './pages/NewGame.vue';
+import Join from './pages/Join.vue';
+import Error404 from './pages/Error404.vue';
 import {createRouter, createWebHistory} from 'vue-router';
 
 
