@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main :class="className">
     <div class="container">
       <router-view v-slot="{ Component }">
         <transition name="fade" mode="out-in">
@@ -10,13 +10,17 @@
   </main>
 </template>
 
-<script>
-export default {
-  name: "App",
-  components: {
-    // MainComponent
-  },
-};
+<script setup>
+import { ref, watch } from "@vue/runtime-core";
+import { useRoute } from "vue-router";
+
+    const className = ref('');
+    const route = useRoute( );
+
+    watch(() => route.meta.class, () => {
+            className.value = route.meta.class;
+        }
+    );
 </script>
 
 <style scoped>

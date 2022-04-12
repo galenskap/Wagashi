@@ -5,7 +5,7 @@
                 <logo-line :color=color></logo-line>
             </router-link>
             <logo-text v-if="!title" :color=color></logo-text>
-            <h1 v-if="title"  :color=color>{{title}}</h1>
+            <h1 v-if="title"  :class=color>{{title}}</h1>
         </div>
     </header>
 </template>

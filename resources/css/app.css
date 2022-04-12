@@ -25,7 +25,10 @@ body {
     font-family: "wagashi", sans-serif;
     color: var(--raisin-black);
 }
-#app {
+main {
+    background: var(--champagne-pink);
+}
+.back-dark {
     background: var(--raisin-black);
 }
 html,
