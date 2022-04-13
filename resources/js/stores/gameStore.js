@@ -3,41 +3,63 @@ import { defineStore } from 'pinia';
 export const useGameStore = defineStore('gameStore', {
     state: () => {
         return {
-          dealer: 0,
-          players: [
-            {
-                id: 1,
-                name: "René Coty",
-                score: 0,
-            },
-            {
-                id: 2,
-                name: "José Luis",
-                score: 0,
-            },
-            {
-                id: 3,
-                name: "Juan Carlos",
-                score: 0,
-            },
-            {
-                id: 6,
-                name: "Alphonse Robichu de ritournelle",
-                score: 0,
-            },
-            {
-                id: 4,
-                name: "Pantoulge",
-                score: 0,
-            },
-            {
-                id: 5,
-                name: "Flutadbe",
-                score: 0,
-            },
-          ],
-          question: '',
-          owner: 1,
+            id: 0,
+            slug: "",
+            lobby_owner: 1,
+            current_dealer: 0,
+            current_question: '',
+            players: [
+                {
+                    id: 1,
+                    pseudo: "René Coty",
+                    score: 0,
+                },
+                {
+                    id: 2,
+                    pseudo: "José Luis",
+                    score: 0,
+                },
+                {
+                    id: 3,
+                    pseudo: "Juan Carlos",
+                    score: 0,
+                },
+                {
+                    id: 6,
+                    pseudo: "Alphonse Robichu de ritournelle",
+                    score: 0,
+                },
+                {
+                    id: 4,
+                    pseudo: "Pantoulge",
+                    score: 0,
+                },
+                {
+                    id: 5,
+                    pseudo: "Flutadbe",
+                    score: 0,
+                },
+            ],
+            propositions: {
+                1: [{
+                    player_id: 1,
+                    text: "chier dans un onsen",
+                    answer_id: 10,
+                    order: 1,
+                }],
+                4: [{
+                    player_id: 4,
+                    text: "manger du pain",
+                    answer_id: 10,
+                    order: 1,
+                }],
+                2: [{
+                    player_id: 2,
+                    text: "les juifs",
+                    answer_id: 10,
+                    order: 1,
+                }],
+            }
         }
       },
 });

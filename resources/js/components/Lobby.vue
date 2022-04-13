@@ -1,5 +1,5 @@
 <template>
-    <player-list :score="true"></player-list>
+    <player-list :score="false"></player-list>
     <button class="button green" :disabled="disabled">Lancer la partie</button>
     <form @submit.prevent="createGame">
         <div class="form-group">
