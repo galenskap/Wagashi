@@ -87,7 +87,7 @@ h1 {
     display: inline-block;
     padding: 0.7rem 1rem;
     border-radius: 0.25rem;
-    font-size: 1.3rem;
+    font-size: 1.6rem;
     font-weight: bold;
     text-decoration: none;
     border: none;
@@ -114,6 +114,9 @@ h1 {
 .button.green:hover {
     color: var(--mint-green);
     background: var(--raisin-black);
+}
+.button:disabled {
+    background: var(--nickel);
 }
 
 .form-group label {
@@ -150,3 +153,4 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+

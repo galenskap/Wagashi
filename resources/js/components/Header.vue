@@ -34,4 +34,7 @@ const props = defineProps(['color', 'title']);
 .logo-text {
     width: 7rem;
 }
+header {
+    margin-bottom: 1rem;
+}
 </style>
