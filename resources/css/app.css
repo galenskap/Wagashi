@@ -57,6 +57,15 @@ img {
     fill: var(--mint-green);
 }
 
+h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+h2 span {
+    color: var(--blush);
+}
 h1,
 .blush {
     color: var(--blush);
@@ -154,3 +163,49 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+
+.card {
+    border-radius: 0.25rem;
+    padding: 1rem;
+    padding-bottom: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: var(--champagne-pink);
+    min-height: 7rem;
+    position: relative;
+}
+
+.question-card {
+    background: var(--blush);
+}
+.answer-card {
+    background: var(--raisin-black);
+    cursor: pointer;
+}
+.card.selected {
+    background: var(--mint-green);
+    color: var(--raisin-black);
+}
+.question-card.empty span {
+    position: relative;
+    width: 5rem;
+    height: 1.5rem;
+    display: inline-block;
+    line-height: 1.2;
+}
+.question-card.empty span:after {
+    background: var(--raisin-black);
+    display: inline-block;
+    width: 5rem;
+    height:2rem;
+    position: absolute;
+    content: "";
+    display: block;
+}
+.card .number {
+    position: absolute;
+    font-size: 1.5rem;
+    right: 0.5rem;
+    bottom: 0.5rem;
+}

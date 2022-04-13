@@ -13,6 +13,14 @@ export const usePlayerStore = defineStore('playerStore', {
                     "id": 156,
                     "text": "les juifs",
                 },
+                {
+                    "id": 23,
+                    "text": "le fromage de pied",
+                },
+                {
+                    "id": 24,
+                    "text": "une fine nuance d'os avec une typo à empattements et de légers reliefs",
+                },
             ]
         }
       },
