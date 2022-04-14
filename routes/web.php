@@ -16,7 +16,12 @@ use App\Events\GeneralBroadcastQuestion;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('base');
+});
+
+
+Route::fallback(function () {
+    return view('base');
 });
 
 Route::get('/test', function () {

@@ -1,0 +1,57 @@
+<template>
+    <div class="new-game">
+        <Header title="Nouvelle partie"></Header>
+        <div class="form">
+            <form @submit.prevent="createGame">
+                <div class="form-group">
+                    <label for="name">Ton pseudo</label>
+                    <input placeholder="Noël Flantier" type="text" id="name" v-model="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">Pack de cartes</label>
+                    <select v-model="selectedPack" required>
+                        <option v-for="pack in packs" :key="pack" :value="pack">{{pack}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="name">Points pour gagner</label>
+                    <input type="number" id="points" v-model="points" min="1" max="20" required>
+                </div>
+                <div class="form-group">
+                    <button class="button green">C'est parti !</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>
+
+
+<script setup>
+    import { ref } from "@vue/reactivity";
+    import Header from "../components/Header.vue";
+
+    /**
+     * State
+     */
+    const name = ref('');
+    const selectedPack = ref('');
+    // TODO : Get the packs from API
+    const packs = ['Pack 1', 'Pack 2', 'Pack 3'];
+    const points = ref(5);
+
+</script>
+
+<style scoped>
+.new-game {
+    color: var(--blush);
+}
+header {
+    margin-bottom: 3rem;
+}
+.button {
+    margin-top: 2rem;
+}
+.button:hover {
+    box-shadow:inset 0 0 0 2px  var(--mint-green);
+}
+</style>
