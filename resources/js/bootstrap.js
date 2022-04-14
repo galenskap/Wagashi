@@ -1,3 +1,7 @@
+import { createToast } from "mosha-vue-toastify";
+import 'mosha-vue-toastify/dist/style.css';
+
+
 window._ = require('lodash');
 
 /**
@@ -9,6 +13,21 @@ window._ = require('lodash');
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+
+/**
+ * Get the same look and behaviour for every toast
+ */
+window.toast = (message, type = "danger") => {
+    createToast(
+        message,
+        {
+            type: type,
+            transition: 'zoom',
+        }
+    );
+}
+
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

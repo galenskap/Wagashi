@@ -55,17 +55,19 @@
     });
 
     const checkGameSlug = (gameslug = false) => {
-         axios.post(process.env.MIX_API_URL + 'check-game', {
-                gameslug: gameslug || gameStore.slug
-            })
-            .then(function (response) {
-                gameStore.slug = gameslug || gameStore.slug;
-                step.value++;
-            })
-            .catch(function (error) {
-                // TODO handle error
-                // console.log(error.response.data.errors);
-            });
+        axios.post(process.env.MIX_API_URL + 'check-game', {
+            gameslug: gameslug || gameStore.slug
+        })
+        .then(function (response) {
+            gameStore.slug = gameslug || gameStore.slug;
+            step.value++;
+        })
+        .catch(function (errors) {
+            // for each error in response.data.errors, display error message
+            for(let error in errors.response.data.errors) {
+                toast(errors.response.data.errors[error][0]);
+            }
+        });
     };
 </script>
 
