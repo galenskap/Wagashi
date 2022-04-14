@@ -6,7 +6,7 @@ export const useGameStore = defineStore('gameStore', {
             id: 0,
             slug: "",
             lobby_owner: 1,
-            current_dealer: 1,
+            current_dealer: 0,
             current_question: "Le gouvernement soupçonne ## ; les complotistes accusent ##.",
             players: [
                 {

@@ -18,7 +18,7 @@
                     <input placeholder="Noël Flantier" type="text" id="name" v-model="name" required>
                 </div>
                 <div class="form-group">
-                    <button class="button green">C'est parti !</button>
+                    <button class="button green" @click="sendPlayerRegistration">C'est parti !</button>
                 </div>
                 </template>
             </form>
@@ -32,6 +32,7 @@
     import { onMounted } from "@vue/runtime-core";
     import Header from "../components/Header.vue";
     import { useGameStore } from "../stores/gameStore";
+    import { useRouter } from "vue-router";
 
     /**
      * State
@@ -40,6 +41,7 @@
     const name = ref('');
     const step = ref(1);
     const gameStore = useGameStore();
+    const router = useRouter();
 
     /**
      * Methods
@@ -60,7 +62,32 @@
         })
         .then(function (response) {
             gameStore.slug = gameslug || gameStore.slug;
-            step.value++;
+            // check if player already has a token in localstorage
+            if (localStorage.getItem("token")) {
+                router.push("/game/" + gameStore.slug);
+            } else {
+                // if not, go to next step (player registration)
+                step.value++;
+            }
+        })
+        .catch(function (errors) {
+            // for each error in response.data.errors, display error message
+            for(let error in errors.response.data.errors) {
+                toast(errors.response.data.errors[error][0]);
+            }
+        });
+    };
+
+    const sendPlayerRegistration = () => {
+        axios.post(process.env.MIX_API_URL + 'new-player', {
+            pseudo: name.value,
+            gameslug: gameStore.slug
+        })
+        .then(function (response) {
+            // save token to localstorage
+            localStorage.setItem("token", response.data.token);
+            // redirect to lobby
+            router.push("/game/" + gameStore.slug);
         })
         .catch(function (errors) {
             // for each error in response.data.errors, display error message

@@ -32,16 +32,42 @@ import Propositions from "../components/Propositions.vue";
     const router = useRouter();
     const gameStore = useGameStore();
     const playerStore = usePlayerStore();
+    const token = `Bearer ${localStorage.getItem('token')}`;
 
     onMounted(() => {
-        console.log(route.params.gameslug);
-        // TODO : get game slug from route and get game data
+
+        // if no token, save the slug and redirect to join-game page
         if(!localStorage.getItem("token")) {
-            // if no token, save the slug and redirect to join-game page
             gameStore.slug = route.params.gameslug;
             router.push("/join-game");
-        } else {
 
+        // if token, get game data and player informations
+        } else {
+            axios.get(process.env.MIX_API_URL + 'get-data', {
+                headers: {
+                    Authorization: token,
+                },
+            })
+            .then(function (response) {
+                // put all game data into the gamestore
+                console.log(response.data);
+                gameStore.id = response.data.game.id;
+                gameStore.lobby_owner = response.data.game.lobby_owner;
+                gameStore.current_dealer = response.data.game.current_dealer.id;
+                gameStore.current_question = response.data.game.current_question.text;
+                gameStore.players = response.data.game.players;
+                gameStore.propositions = response.data.game.propositions || {};
+
+                // put all player data into the playerstore
+                playerStore.id = response.data.player.id;
+                playerStore.answers = response.data.player.answers;
+            })
+            .catch(function (errors) {
+                // for each error in response.data.errors, display error message
+                for(let error in errors.response.data.errors) {
+                    toast(errors.response.data.errors[error][0]);
+                }
+            });
         }
     });
 

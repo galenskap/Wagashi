@@ -104,7 +104,7 @@ class LobbyController extends Controller
         // Validate fields
         $request->validate([
             'gameslug' => 'required|string|exists:games,slug',
-            'pseudo' => 'required|min:1|max:40'
+            'pseudo' => 'required|string|min:1|max:40'
         ]);
 
         // Load the game
