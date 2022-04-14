@@ -29,7 +29,9 @@
 
 <script setup>
     import { ref } from "@vue/reactivity";
+    import { onMounted } from "@vue/runtime-core";
     import Header from "../components/Header.vue";
+    import { useGameStore } from "../stores/gameStore";
 
     /**
      * State
@@ -37,15 +39,34 @@
     const gameslug = ref('');
     const name = ref('');
     const step = ref(1);
+    const gameStore = useGameStore();
 
     /**
      * Methods
      */
     const nextStep = () => {
-        // TODO : API call to check if the game exists
-        step.value++;
+        checkGameSlug(gameslug.value);
     };
 
+    onMounted(() => {
+        if(gameStore.slug.length > 0) {
+            checkGameSlug();
+        }
+    });
+
+    const checkGameSlug = (gameslug = false) => {
+         axios.post(process.env.MIX_API_URL + 'check-game', {
+                gameslug: gameslug || gameStore.slug
+            })
+            .then(function (response) {
+                gameStore.slug = gameslug || gameStore.slug;
+                step.value++;
+            })
+            .catch(function (error) {
+                // TODO handle error
+                // console.log(error.response.data.errors);
+            });
+    };
 </script>
 
 <style scoped>

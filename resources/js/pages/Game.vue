@@ -19,7 +19,7 @@
 
 <script setup>
 import { computed, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import Header from "../components/Header.vue";
 import { useGameStore } from "../stores/gameStore";
 import { usePlayerStore } from "../stores/playerStore";
@@ -29,12 +29,20 @@ import Dealer from "../components/Dealer.vue";
 import Propositions from "../components/Propositions.vue";
 
     const route = useRoute();
+    const router = useRouter();
     const gameStore = useGameStore();
     const playerStore = usePlayerStore();
 
     onMounted(() => {
-        // console.log(route.params.gameslug);
+        console.log(route.params.gameslug);
         // TODO : get game slug from route and get game data
+        if(!localStorage.getItem("token")) {
+            // if no token, save the slug and redirect to join-game page
+            gameStore.slug = route.params.gameslug;
+            router.push("/join-game");
+        } else {
+
+        }
     });
 
     const headTitle = computed(() => {

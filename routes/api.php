@@ -31,7 +31,7 @@ Route::post('/new-game', [LobbyController::class, 'newGame']);
 
 Route::group(['middleware' => 'lobby'], function () {
     // Check if given slug matches with a valid game session (neither already full nor finished)
-    Route::get('/check-game', [LobbyController::class, 'isGameValid']);
+    Route::post('/check-game', [LobbyController::class, 'isGameValid']);
     // Register a new user to the game session
     Route::post('/new-player', [LobbyController::class, 'newPlayer']);
 });
