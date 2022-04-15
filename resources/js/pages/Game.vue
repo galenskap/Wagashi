@@ -49,27 +49,18 @@ import Propositions from "../components/Propositions.vue";
                 },
             })
             .then(function (response) {
-                // check if the game slug is the same as the one in the url
-                if(response.data.game.slug != route.params.gameslug) {
-                    // if not, remove token from localstorage
-                    localStorage.removeItem("token");
-                    // and redirect to join-game page
-                    gameStore.slug = route.params.gameslug;
-                    router.push("/join-game");
-                } else {
-                    // put all game data into the gamestore
-                    console.log(response.data);
-                    gameStore.id = response.data.game.id;
-                    gameStore.lobby_owner = response.data.game.lobby_owner;
-                    gameStore.current_dealer = response.data.game.current_dealer ? response.data.game.current_dealer.id : 0;
-                    gameStore.current_question = response.data.game.current_question ? response.data.game.current_question.text : '';
-                    gameStore.players = response.data.game.players;
-                    gameStore.propositions = response.data.game.propositions || {};
+                // put all game data into the gamestore
+                console.log(response.data);
+                gameStore.id = response.data.game.id;
+                gameStore.lobby_owner = response.data.game.lobby_owner;
+                gameStore.current_dealer = response.data.game.current_dealer ? response.data.game.current_dealer.id : 0;
+                gameStore.current_question = response.data.game.current_question ? response.data.game.current_question.text : '';
+                gameStore.players = response.data.game.players;
+                gameStore.propositions = response.data.game.propositions || {};
 
-                    // put all player data into the playerstore
-                    playerStore.id = response.data.player.id;
-                    playerStore.answers = response.data.player.answers;
-                }
+                // put all player data into the playerstore
+                playerStore.id = response.data.player.id;
+                playerStore.answers = response.data.player.answers;
             })
             .catch(function (errors) {
                 // for each error in response.data.errors, display error message
