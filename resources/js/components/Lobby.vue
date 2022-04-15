@@ -1,8 +1,9 @@
 <template>
     <player-list :score="false"></player-list>
-    <button class="button green" :disabled="disabled" @click="launchGame">Lancer la partie</button>
+    <button v-if="playerStore.id == gameStore.lobby_owner" class="button green" :disabled="disabled" @click="launchGame">Lancer la partie</button>
+    <p class="waiting" v-else>On attend que <span class="blush">{{ gameStore.getLobbyOwner.pseudo }}</span> démarre la partie !</p>
     <form @submit.prevent="createGame">
-        <div class="form-group">
+        <div  class="form-group">
             <input ref="shareLink"  type="text" id="name" :value="link">
         </div>
         <div class="form-group">
@@ -26,7 +27,7 @@
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     const disabled = computed(() => {
-        return (gameStore.players.length < 3 || playerStore.id != gameStore.lobby_owner) ? true : false;
+        return (gameStore.players.length < 3) ? true : false;
     });
 
     const selectLink = () => {
@@ -58,5 +59,9 @@
 }
 form {
     margin-top: 2rem;
+}
+.waiting {
+    font-size: 1.5rem;
+    margin-top: 3rem;
 }
 </style>

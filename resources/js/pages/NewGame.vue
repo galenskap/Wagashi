@@ -63,7 +63,6 @@
             score_goal: points.value
         })
         .then(function (response) {
-            console.log(response.data);
             // save token to localstorage
             localStorage.setItem("token", response.data.token);
             // redirect to lobby

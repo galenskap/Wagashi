@@ -41,7 +41,6 @@ import Propositions from "../components/Propositions.vue";
     const token = `Bearer ${localStorage.getItem('token')}`;
     const loading = ref(true);
 
-console.log('sd');
     onMounted(() => {
 
         // if no token, save the slug and redirect to join-game page
@@ -81,7 +80,7 @@ console.log('sd');
     });
 
     const headTitle = computed(() => {
-        return (gameStore.current_dealer == 0 && !loading) ? "Lobby" : null;
+        return (gameStore.current_dealer == 0 && !loading.value) ? "Lobby" : null;
     });
 
 </script>

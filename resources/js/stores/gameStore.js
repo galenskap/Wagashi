@@ -67,6 +67,9 @@ export const useGameStore = defineStore('gameStore', {
         getCurrentDealer: (state) => {
             return state.players.find(player => player.id === state.current_dealer);
         },
+        getLobbyOwner: (state) => {
+            return state.players.find(player => player.id === state.lobby_owner);
+        },
         countQuestionHoles: (state) => {
             return state.current_question.match(/##/g).length;
         },
