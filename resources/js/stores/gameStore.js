@@ -59,7 +59,8 @@ export const useGameStore = defineStore('gameStore', {
                 //     answer_id: 10,
                 //     order: 1,
                 // }],
-            }
+            },
+            playersHavingPropositions: [],
         }
       },
     getters: {

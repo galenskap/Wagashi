@@ -192,13 +192,25 @@ class Game extends Model
     public function getAllPropositions()
     {
         $propositions = DB::table('currentpropositions')
-            ->join('answers', 'currentpropositions.answer_id', '=', 'answers.id')
-            ->where('currentpropositions.game_id', $this->id)
-            ->select('currentpropositions.player_id', 'answers.text', 'currentpropositions.answer_id', 'currentpropositions.order')
-            ->get()
-            ->groupBy('player_id');
+        ->join('answers', 'currentpropositions.answer_id', '=', 'answers.id')
+        ->where('currentpropositions.game_id', $this->id)
+        ->select('currentpropositions.player_id', 'answers.text', 'currentpropositions.answer_id', 'currentpropositions.order')
+        ->get()
+        ->groupBy('player_id');
 
         return $propositions;
+    }
+
+    /**
+     * Get all the players having sent a proposition
+     * @return array
+     */
+    public function getPlayersHavingSentProposition()
+    {
+
+        $players = $this->propositions('player_id')->get()->groupBy('player_id')->keys();
+
+        return $players;
     }
 
     /**

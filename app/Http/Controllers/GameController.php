@@ -70,14 +70,12 @@ class GameController extends Controller
             'player' => $player,
             'game' => $game,
             'propositions' => $propositions ?? null,
+            'playersHavingPropositions' => $game->getPlayersHavingSentProposition(),
         ]);
-
-
-
     }
 
     /**
-     * RSend a player's proposition
+     * Send a player's proposition
      * @param Request $request
      */
     public function sendProposition(Request $request)
