@@ -63,10 +63,7 @@ import Propositions from "../components/Propositions.vue";
                 playerStore.answers = response.data.player.answers;
             })
             .catch(function (errors) {
-                // for each error in response.data.errors, display error message
-                for(let error in errors.response.data.errors) {
-                    toast(errors.response.data.errors[error][0]);
-                }
+                toast(errors.response.data.message);
             });
         }
     });
