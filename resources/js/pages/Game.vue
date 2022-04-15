@@ -53,8 +53,8 @@ import Propositions from "../components/Propositions.vue";
                 console.log(response.data);
                 gameStore.id = response.data.game.id;
                 gameStore.lobby_owner = response.data.game.lobby_owner;
-                gameStore.current_dealer = response.data.game.current_dealer.id;
-                gameStore.current_question = response.data.game.current_question.text;
+                gameStore.current_dealer = response.data.game.current_dealer ? response.data.game.current_dealer.id : 0;
+                gameStore.current_question = response.data.game.current_question ? response.data.game.current_question.text : '';
                 gameStore.players = response.data.game.players;
                 gameStore.propositions = response.data.game.propositions || {};
 
