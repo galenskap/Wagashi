@@ -14,12 +14,14 @@
 <script setup>
     import PlayerList from "../components/PlayerList.vue";
     import { computed, ref } from "vue";
+    import { useRouter } from "vue-router";
     import { useGameStore } from "../stores/gameStore";
     import { usePlayerStore } from "../stores/playerStore";
 
     const gameStore = useGameStore();
     const playerStore = usePlayerStore();
     const shareLink = ref(null);
+    const router = useRouter();
     const link = window.location.href;
     const token = `Bearer ${localStorage.getItem('token')}`;
 
@@ -39,9 +41,9 @@
             },
         })
         .then(function (response) {
-            // redirect to game view
-            gameStore.slug = response.data.slug;
-            router.push("/game/" + gameStore.slug);
+            // set current_dealer and current_question
+            gameStore.current_dealer = response.data.dealer.id;
+            gameStore.current_question = response.data.question.text;
         })
         .catch(function (errors) {
             toast(errors.response.data.message);

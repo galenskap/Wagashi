@@ -48,7 +48,10 @@ class GameController extends Controller
 
         // TODO: Broadcast question card and dealer to players
 
-        return true;
+        return response()->json([
+            'dealer' => $dealer,
+            'question' => $questionCard,
+        ]);
     }
 
     /**

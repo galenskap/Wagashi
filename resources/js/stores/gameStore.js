@@ -5,40 +5,40 @@ export const useGameStore = defineStore('gameStore', {
         return {
             id: 0,
             slug: "",
-            lobby_owner: 1,
+            lobby_owner: 0,
             current_dealer: 0,
-            current_question: "Le gouvernement soupçonne ## ; les complotistes accusent ##.",
+            current_question: "",
             players: [
-                {
-                    id: 1,
-                    pseudo: "René Coty",
-                    score: 0,
-                },
-                {
-                    id: 2,
-                    pseudo: "José Luis",
-                    score: 0,
-                },
-                {
-                    id: 3,
-                    pseudo: "Juan Carlos",
-                    score: 0,
-                },
-                {
-                    id: 6,
-                    pseudo: "Alphonse Robichu de ritournelle",
-                    score: 0,
-                },
-                {
-                    id: 4,
-                    pseudo: "Pantoulge",
-                    score: 0,
-                },
-                {
-                    id: 5,
-                    pseudo: "Flutadbe",
-                    score: 0,
-                },
+            //     {
+            //         id: 1,
+            //         pseudo: "René Coty",
+            //         score: 0,
+            //     },
+            //     {
+            //         id: 2,
+            //         pseudo: "José Luis",
+            //         score: 0,
+            //     },
+            //     {
+            //         id: 3,
+            //         pseudo: "Juan Carlos",
+            //         score: 0,
+            //     },
+            //     {
+            //         id: 6,
+            //         pseudo: "Alphonse Robichu de ritournelle",
+            //         score: 0,
+            //     },
+            //     {
+            //         id: 4,
+            //         pseudo: "Pantoulge",
+            //         score: 0,
+            //     },
+            //     {
+            //         id: 5,
+            //         pseudo: "Flutadbe",
+            //         score: 0,
+            //     },
             ],
             propositions: {
                 // 1: [{
