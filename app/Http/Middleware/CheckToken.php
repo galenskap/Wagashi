@@ -20,20 +20,29 @@ class CheckToken
         $header = $request->header('Authorization');
 
         if(!$header) {
-            return response(['Token not provided'], 403);
+            return response()->json(array(
+                'code' => 403,
+                'message' => 'Token not provided',
+            ), 403);
         }
 
         $token = decrypt(str_replace('Bearer ','',  $header));
 
         if(!$token['game'] || !$token['player']){
-            return response(['Wrong token'], 403);
+            return response()->json(array(
+                'code' => 403,
+                'message' => 'Wrong token',
+            ), 403);
         }
 
         $game = Game::find($token['game']);
         $player = Player::find($token['player']);
 
         if (!$game || !$player) {
-            return response(['The token contains wrong data'], 403);
+            return response()->json(array(
+                'code' => 403,
+                'message' => 'The token contains wrong data',
+            ), 403);
         }
 
         $request->merge([
