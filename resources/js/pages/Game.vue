@@ -1,24 +1,30 @@
 <template>
     <div class="game">
         <Header color="dark" :title="headTitle"></Header>
-        <template v-if="gameStore.current_dealer == 0">
-            <lobby></lobby>
+        <template v-if="loading">
+            <!-- TODO: animation -->
+            Préparation de la pâte de riz...
         </template>
         <template v-else>
-            <propositions v-if="Object.keys(gameStore.propositions).length != 0">
-            </propositions>
+            <template v-if="gameStore.current_dealer == 0">
+                <lobby></lobby>
+            </template>
             <template v-else>
-                <dealer v-if="gameStore.current_dealer == playerStore.id">
-                </dealer>
-                <player v-if="gameStore.current_dealer != playerStore.id">
-                </player>
+                <propositions v-if="Object.keys(gameStore.propositions).length != 0">
+                </propositions>
+                <template v-else>
+                    <dealer v-if="gameStore.current_dealer == playerStore.id">
+                    </dealer>
+                    <player v-if="gameStore.current_dealer != playerStore.id">
+                    </player>
+                </template>
             </template>
         </template>
     </div>
 </template>
 
 <script setup>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Header from "../components/Header.vue";
 import { useGameStore } from "../stores/gameStore";
@@ -33,7 +39,9 @@ import Propositions from "../components/Propositions.vue";
     const gameStore = useGameStore();
     const playerStore = usePlayerStore();
     const token = `Bearer ${localStorage.getItem('token')}`;
+    const loading = ref(true);
 
+console.log('sd');
     onMounted(() => {
 
         // if no token, save the slug and redirect to join-game page
@@ -62,6 +70,9 @@ import Propositions from "../components/Propositions.vue";
                 playerStore.id = response.data.player.id;
                 playerStore.answers = response.data.player.answers;
 
+                // set loading to false
+                loading.value = false;
+
             })
             .catch(function (errors) {
                 toast(errors.response.data.message);
@@ -70,7 +81,7 @@ import Propositions from "../components/Propositions.vue";
     });
 
     const headTitle = computed(() => {
-        return (gameStore.current_dealer == 0) ? "Lobby" : null;
+        return (gameStore.current_dealer == 0 && !loading) ? "Lobby" : null;
     });
 
 </script>
