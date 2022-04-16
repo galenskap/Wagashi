@@ -43,7 +43,6 @@
     const step = ref('proposition');
     const gameStore = useGameStore();
     const playerStore = usePlayerStore();
-    const token = `Bearer ${localStorage.getItem('token')}`;
 
 
     /**
