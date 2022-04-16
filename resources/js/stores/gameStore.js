@@ -75,6 +75,9 @@ export const useGameStore = defineStore('gameStore', {
         },
         getHTMLQuestion: (state) => {
             return state.current_question.replace(/##/g, '<span class="question-hole"></span>');
-        }
+        },
+        getSplittedQuestion: (state) => {
+            return state.current_question.split('##');
+        },
     }
 });
