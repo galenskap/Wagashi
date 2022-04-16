@@ -3,12 +3,19 @@
     <h2 v-else><span>{{ gameStore.getCurrentDealer.pseudo }}</span> doit choisir une proposition</h2>
 
     <div class="answers">
-        <ul>
-            <li class="card question-card" v-for="(answer, index) in gameStore.propositions" :key="index">
+        <swiper
+    :slides-per-view="1"
+    :modules="modules"
+    :space-between="10"
+    :navigation="{hideOnClick: true}"
+    :pagination="{ clickable: true }"
+    @slideChange="onSlideChange"
+    >
+            <swiper-slide class="card question-card" v-for="(answer, index) in gameStore.propositions" :key="index">
                 <span v-html="augmentedQuestion(answer)"></span>
                 <button class="button green" v-if="playerStore.id == gameStore.current_dealer" @click="chooseProposition">Choisir</button>
-            </li>
-        </ul>
+            </swiper-slide>
+        </swiper>
     </div>
 </template>
 
@@ -17,8 +24,19 @@
     import { useGameStore } from "../stores/gameStore";
     import { usePlayerStore } from "../stores/playerStore";
 
+    import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+    // Import Swiper Vue.js components
+    import { Swiper, SwiperSlide } from 'swiper/vue';
+    // Import Swiper styles
+    import 'swiper/css';
+    import 'swiper/css/navigation';
+    import 'swiper/css/pagination';
+
     const gameStore = useGameStore();
     const playerStore = usePlayerStore();
+    const modules = [Navigation, Pagination, A11y];
+
+
 
     const augmentedQuestion = (answers) => {
         let augmentedQuestion = "";
@@ -29,8 +47,15 @@
         });
         return augmentedQuestion;
     }
+    // Delete  navigation after slide
+    const onSlideChange = (swiper) => {
+        if(typeof swiper.navigation.nextEl.outerHTML !== '') {
+            swiper.navigation.nextEl.classList.add('hidden');
+        }
+    }
 </script>
 
 
 <style scoped>
+
 </style>

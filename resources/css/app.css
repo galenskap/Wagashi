@@ -4,6 +4,9 @@
     --raisin-black: #262730ff;
     --nickel: #6d6c61ff;
     --champagne-pink: #ffe5d4ff;
+    --swiper-pagination-color: var(--blush);
+    --swiper-pagination-bullet-inactive-color: var(--raisin-black);
+    --swiper-pagination-bullet-inactive-opacity: 1;
 }
 
 @font-face {
@@ -208,4 +211,40 @@ input[type=number] {
     font-size: 1.5rem;
     right: 0.5rem;
     bottom: 0.5rem;
+}
+
+.swiper-button-prev {
+    display: none !important;
+}
+
+#app .swiper-pagination {
+    bottom: -3px;
+}
+#app .swiper-button-next:after {
+    content: "";
+}
+
+#app .swiper-button-next{
+    background-image: url(../img/next.svg);
+    background-repeat: no-repeat;
+    transition: all .3s ease-in;
+    animation-name: bounce;
+    animation-timing-function: ease;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+}
+
+#app .swiper-button-next.hidden {
+    opacity: 0;
+}
+
+
+@keyframes bounce {
+    0%   { transform: scale(1,1)    translateY(0); }
+    75%  { transform: scale(1.1,.9) translateY(0); }
+    80%  { transform: scale(.9,1.1) translateY(-30px); }
+    85%  { transform: scale(1,1)    translateY(0); }
+    90%  { transform: scale(1,1)    translateY(-7px); }
+    95%  { transform: scale(1,1)    translateY(0); }
+    100% { transform: scale(1,1)    translateY(0); }
 }
