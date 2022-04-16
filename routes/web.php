@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Game;
 use Illuminate\Support\Facades\Route;
+use App\Events\GeneralBroadcastQuestion;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,4 +22,10 @@ Route::get('/', function () {
 
 Route::fallback(function () {
     return view('base');
+});
+
+Route::get('/test', function () {
+
+    $game = Game::find(1);
+    GeneralBroadcastQuestion::dispatch($game, "Quelle est ## truc ?", 45);
 });
