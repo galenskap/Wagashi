@@ -26,6 +26,11 @@ Route::fallback(function () {
 
 Route::get('/test', function () {
 
-    $game = Game::find(1);
+    $game = Game::find(11);
     GeneralBroadcastQuestion::dispatch($game, "Quelle est ## truc ?", 45);
+    echo "sent";
+});
+
+Route::post('login', [ 'as' => 'login'] , function () {
+    return true;
 });
