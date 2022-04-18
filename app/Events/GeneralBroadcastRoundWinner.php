@@ -20,6 +20,7 @@ class GeneralBroadcastRoundWinner implements ShouldBroadcastNow
     public $answers;
     public $question;
     public $winner;
+    public $players;
 
     /**
      * Create a new event instance.
@@ -34,6 +35,7 @@ class GeneralBroadcastRoundWinner implements ShouldBroadcastNow
         $this->answers = $answers;
         $this->question = $question;
         $this->winner = $player->id;
+        $this->players = $this->game->players;
     }
 
     /**
