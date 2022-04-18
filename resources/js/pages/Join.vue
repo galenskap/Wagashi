@@ -86,6 +86,10 @@
         .then(function (response) {
             // save token to localstorage
             localStorage.setItem("token", response.data.token);
+
+            // save token to global variable
+            token = `Bearer ${response.data.token}`;
+
             // redirect to lobby
             router.push("/game/" + gameStore.slug);
         })

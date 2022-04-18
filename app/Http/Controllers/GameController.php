@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
+use App\Models\Answer;
+use App\Models\Question;
 use App\Models\Proposition;
 use Illuminate\Http\Request;
-use App\Jobs\CheckPropositions;
-use Illuminate\Support\Facades\Log;
+use App\Events\GeneralBroadcastQuestion;
+use App\Events\GeneralBroadcastRoundWinner;
+use App\Events\GeneralBroadcastNewProposition;
+use App\Events\GeneralBroadcastAllPropositions;
 
 class GameController extends Controller
 {
@@ -46,7 +50,8 @@ class GameController extends Controller
         // Draw a dealer
         $dealer = $game->drawDealer();
 
-        // TODO: Broadcast question card and dealer to players
+        // Broadcast question card and dealer to players
+        GeneralBroadcastQuestion::dispatch($game->id, $questionCard->text, $dealer->id);
 
         return response()->json([
             'dealer' => $dealer,
@@ -130,8 +135,14 @@ class GameController extends Controller
             $order++;
         }
 
+        // Broadcast the information that the player has submitted a proposition
+        GeneralBroadcastNewProposition::dispatch($game->id);
+
         // Check if all players have sent their propositions
-        CheckPropositions::dispatch($game->id);
+        if ($game->areAllPropositionsSent()) {
+            // Broadcast to general all the propositions
+            GeneralBroadcastAllPropositions::dispatch($game->id);
+        }
     }
 
     /**
@@ -169,16 +180,25 @@ class GameController extends Controller
         $chosenPlayer->current_score++;
         $chosenPlayer->save();
 
-        // TODO: broadcast the choice to the players
+        // Broadcast the choice to the players
+        $question = Question::find($game->current_question);
+        $propositions = $chosenPlayer->propositions;
+        $answers = [];
+        foreach ($propositions as $proposition) {
+            $answer = Answer::find($proposition->answer_id);
+            $answers[] = $answer;
+        }
+        GeneralBroadcastRoundWinner::dispatch($game->id, $chosenPlayer->id, $question->text, $answers);
 
-        // Check if the game is over (score_goal reached)
+        //Check if the game is over (score_goal reached)
         if (!$game->isThereAWinner()) {
 
             // if not, discard cards and draw a new question card & dealer
             $game->discardAllPropositions();
             $question = $game->drawQuestionCard();
             $dealer = $game->drawDealer();
-            // TODO: broadcast the new question card and dealer to the players
+            // Broadcast the new question card and dealer to the players
+            GeneralBroadcastQuestion::dispatch($game->id, $question->text, $dealer->id);
 
             // Draw enough cards to fill all players hands
             $game->drawPlayersCards();

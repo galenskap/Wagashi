@@ -24,7 +24,6 @@
     const shareLink = ref(null);
     const router = useRouter();
     const link = window.location.href;
-    const token = `Bearer ${localStorage.getItem('token')}`;
 
     const disabled = computed(() => {
         return (gameStore.players.length < 3) ? true : false;

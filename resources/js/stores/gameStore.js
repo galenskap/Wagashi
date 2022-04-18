@@ -19,37 +19,11 @@ export const useGameStore = defineStore('gameStore', {
             //         pseudo: "José Luis",
             //         score: 0,
             //     },
-            //     {
-            //         id: 3,
-            //         pseudo: "Juan Carlos",
-            //         score: 0,
-            //     },
-            //     {
-            //         id: 6,
-            //         pseudo: "Alphonse Robichu de ritournelle",
-            //         score: 0,
-            //     },
-            //     {
-            //         id: 4,
-            //         pseudo: "Pantoulge",
-            //         score: 0,
-            //     },
-            //     {
-            //         id: 5,
-            //         pseudo: "Flutadbe",
-            //         score: 0,
-            //     },
             ],
             propositions: {
                 // 1: [{
                 //     player_id: 1,
                 //     text: "chier dans un onsen",
-                //     answer_id: 10,
-                //     order: 1,
-                // }],
-                // 4: [{
-                //     player_id: 4,
-                //     text: "manger du pain",
                 //     answer_id: 10,
                 //     order: 1,
                 // }],
@@ -61,6 +35,13 @@ export const useGameStore = defineStore('gameStore', {
                 // }],
             },
             playersHavingPropositions: [],
+            previous_turn: {
+                question: "",
+                answers: [
+                ],
+                winner: 0,
+            },
+            result_popin: false,
         }
       },
     getters: {
@@ -69,6 +50,9 @@ export const useGameStore = defineStore('gameStore', {
         },
         getLobbyOwner: (state) => {
             return state.players.find(player => player.id === state.lobby_owner);
+        },
+        getWinnerPlayer: (state) => {
+            return state.players.find(player => player.id === state.previous_turn.winner);
         },
         countQuestionHoles: (state) => {
             return state.current_question.match(/##/g).length;

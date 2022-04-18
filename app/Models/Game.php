@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\PlayerCards;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -117,7 +118,8 @@ class Game extends Model
             // Draw cards
             $playerCards = $player->drawCards();
 
-            // TODO : Broadcast cards to player
+            // Broadcast cards to player
+            PlayerCards::dispatch($player->id);
         }
     }
 

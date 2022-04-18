@@ -11,24 +11,29 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class GeneralBroadcastQuestion implements ShouldBroadcastNow
+class GeneralBroadcastNewPlayer implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    protected $game;
-    public $question;
-    public $dealer_id;
+    private $game;
+    public $players;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(int $game_id, string $question, int $dealer_id)
+    public function __construct(int $game_id)
     {
         $this->game = Game::find($game_id);
-        $this->question = $question;
-        $this->dealer_id = $dealer_id;
+        $this->players = $this->game->players;
+    }
+
+    public function broadcastWith()
+    {
+        return [
+            'players' => $this->players
+        ];
     }
 
     /**

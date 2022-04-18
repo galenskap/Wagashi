@@ -3,6 +3,8 @@
 use App\Models\Game;
 use Illuminate\Support\Facades\Route;
 use App\Events\GeneralBroadcastQuestion;
+use App\Events\PlayerCards;
+use App\Models\Player;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +28,13 @@ Route::fallback(function () {
 
 Route::get('/test', function () {
 
-    $game = Game::find(1);
+    $player = Player::find(33);
+    PlayerCards::dispatch($player);
+    $game = Game::find(11);
     GeneralBroadcastQuestion::dispatch($game, "Quelle est ## truc ?", 45);
+    echo "sent";
+});
+
+Route::post('login', [ 'as' => 'login'] , function () {
+    return true;
 });

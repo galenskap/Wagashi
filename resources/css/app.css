@@ -123,6 +123,11 @@ h1 {
     background: var(--mint-green);
 }
 
+.button.dark {
+    background: var(--raisin-black);
+    color: var(--mint-green);
+}
+
 .button.green:hover {
     color: var(--mint-green);
     background: var(--raisin-black);

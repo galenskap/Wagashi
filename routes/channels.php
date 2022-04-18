@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -13,6 +14,16 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
-});
+// Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
+//     return (int) $user->id === (int) $id;
+// });
+
+Broadcast::channel('general-{gameId}', function ($player, $gameId) {
+    return ($player->game_id == $gameId);
+}, ['middleware' => ['token']]);
+
+Broadcast::channel('player-{playerId}', function ($player, $playerId) {
+    return ($player->id == $playerId);
+}, ['middleware' => ['token']]);
+
+// Use request token to check if the player belongs to the game

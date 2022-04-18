@@ -20,6 +20,9 @@
                 </template>
             </template>
         </template>
+        <template v-if="gameStore.result_popin">
+            <rounds-end></rounds-end>
+        </template>
     </div>
 </template>
 
@@ -33,12 +36,13 @@ import Lobby from "../components/Lobby.vue";
 import Player from "../components/Player.vue";
 import Dealer from "../components/Dealer.vue";
 import Propositions from "../components/Propositions.vue";
+import RoundsEnd from "../components/RoundsEnd.vue";
+import { connectGeneral, connectPlayer, setupBroadcast } from "../broadcasting";
 
     const route = useRoute();
     const router = useRouter();
     const gameStore = useGameStore();
     const playerStore = usePlayerStore();
-    const token = `Bearer ${localStorage.getItem('token')}`;
     const loading = ref(true);
 
     onMounted(() => {
@@ -50,6 +54,7 @@ import Propositions from "../components/Propositions.vue";
 
         // if token, get game data and player informations
         } else {
+
             axios.get(process.env.MIX_API_URL + 'get-data', {
                 headers: {
                     Authorization: token,
@@ -68,6 +73,11 @@ import Propositions from "../components/Propositions.vue";
                 // put all player data into the playerstore
                 playerStore.id = response.data.player.id;
                 playerStore.answers = response.data.player.answers;
+
+                // Connect to websocket
+                setupBroadcast();
+                connectGeneral(gameStore.id);
+                connectPlayer(playerStore.id);
 
                 // set loading to false
                 loading.value = false;
