@@ -63,5 +63,8 @@ export const useGameStore = defineStore('gameStore', {
         getSplittedQuestion: (state) => {
             return state.current_question.split('##');
         },
+        getPlayersByScore: (state) => {
+            return state.players.sort((a, b) => b.current_score - a.current_score);
+        }
     }
 });

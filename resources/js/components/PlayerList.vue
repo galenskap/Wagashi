@@ -1,6 +1,6 @@
 <template>
     <ol>
-        <li v-for="(player, index) in gameStore.players" :key="index">
+        <li v-for="(player, index) in gameStore.getPlayersByScore" :key="index">
             <span :class="{ blush : playerStore.id == player.id }">{{player.pseudo}}</span>
             <span v-if="player.id == gameStore.lobby_owner"><img class="crown" :src="Crown" alt="" /></span>
             <span class="score" v-if="score"> - {{player.current_score}}pts</span>

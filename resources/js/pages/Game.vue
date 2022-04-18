@@ -20,9 +20,9 @@
                 </template>
             </template>
         </template>
-        <template v-if="gameStore.result_popin">
-            <rounds-end></rounds-end>
-        </template>
+        <transition name="slide">
+            <scorePanel v-if="gameStore.result_popin"></scorePanel>
+        </transition>
     </div>
 </template>
 
@@ -36,7 +36,7 @@ import Lobby from "../components/Lobby.vue";
 import Player from "../components/Player.vue";
 import Dealer from "../components/Dealer.vue";
 import Propositions from "../components/Propositions.vue";
-import RoundsEnd from "../components/RoundsEnd.vue";
+import scorePanel from "../components/scorePanel.vue";
 import { connectGeneral, connectPlayer, setupBroadcast } from "../broadcasting";
 
     const route = useRoute();

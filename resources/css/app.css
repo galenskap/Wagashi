@@ -253,3 +253,26 @@ input[type=number] {
     95%  { transform: scale(1,1)    translateY(0); }
     100% { transform: scale(1,1)    translateY(0); }
 }
+
+.slide-enter-active,.slide-leave-active {
+    z-index: 99;
+    transition: transform 0.23s ease-out;
+}
+.slide-leave-from,
+.slide-enter-to {
+    transform: translateY(0%);
+}
+.slide-leave-to,
+.slide-enter-from {  transform: translateY(100%);}
+
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
