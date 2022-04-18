@@ -36,6 +36,7 @@ export function connectGeneral($id) {
         gameStore.previous_turn.answers = e.answers;
         gameStore.previous_turn.winner = e.winner;
         gameStore.players = e.players; // update players list in order to get valid scores
+        gameStore.result_popin_round = true;
         gameStore.result_popin = true;
     });
 

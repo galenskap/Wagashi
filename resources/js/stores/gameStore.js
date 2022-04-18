@@ -42,6 +42,7 @@ export const useGameStore = defineStore('gameStore', {
                 winner: 0,
             },
             result_popin: false,
+            result_popin_round: false,
         }
       },
     getters: {

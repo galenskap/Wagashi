@@ -13,7 +13,7 @@
     >
             <swiper-slide class="card question-card" v-for="(answer, index) in gameStore.propositions" :key="index">
                 <augmented-question :question="gameStore.current_question" :answers="answer"></augmented-question>
-                <button class="button green" v-if="playerStore.id == gameStore.current_dealer" @click="chooseProposition(answer)">Choisir</button>
+                <button :disabled="loading" class="button green" v-if="playerStore.id == gameStore.current_dealer" @click="chooseProposition(answer)">Choisir</button>
             </swiper-slide>
         </swiper>
     </div>
@@ -24,7 +24,6 @@
     import { useGameStore } from "../stores/gameStore";
     import { usePlayerStore } from "../stores/playerStore";
     import AugmentedQuestion from "../components/AugmentedQuestion.vue";
-
     import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
     // Import Swiper Vue.js components
     import { Swiper, SwiperSlide } from 'swiper/vue';
@@ -33,9 +32,14 @@
     import 'swiper/css/navigation';
     import 'swiper/css/pagination';
 
+    /**
+     * State
+     */
+
     const gameStore = useGameStore();
     const playerStore = usePlayerStore();
     const modules = [Navigation, Pagination, A11y];
+    let loading  = ref(false);
 
     // Delete  navigation after slide
     const onSlideChange = (swiper) => {
@@ -46,6 +50,7 @@
 
     // Send dealer choice to the server
     const chooseProposition = (answer) => {
+        loading.value = true;
         axios.post(process.env.MIX_API_URL + 'send-dealer-choice', {
             player_id: answer[0].player_id,
         }, {
@@ -54,15 +59,21 @@
             },
         })
         .then(function (response) {
+            loading.value = false;
+
             // console.log("working");
         })
         .catch(function (errors) {
             toast(errors.response.data.message);
+            loading.value = false;
+
         });
     };
 </script>
 
 
 <style scoped>
-
+.button {
+    margin-top: 2rem;
+}
 </style>

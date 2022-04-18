@@ -6,6 +6,7 @@
             </router-link>
             <logo-text v-if="!title" :color=color></logo-text>
             <h1 v-if="title"  :class=color>{{title}}</h1>
+            <img class="cup" @click="gameStore.result_popin = true" :src="Cup" alt="Voir les scores">
         </div>
     </header>
 </template>
@@ -13,8 +14,11 @@
 <script setup>
 import LogoText from "../components/LogoText.vue";
 import LogoLine from "../components/LogoLine.vue";
+import Cup from "../../img/cup.svg";
+import { useGameStore } from "../stores/gameStore";
 
 const props = defineProps(['color', 'title']);
+const gameStore = useGameStore();
 
 </script>
 
@@ -36,5 +40,10 @@ const props = defineProps(['color', 'title']);
 }
 header {
     margin-bottom: 1rem;
+}
+.cup {
+    width: 1.8rem;
+    margin-left: auto;
+    cursor: pointer;
 }
 </style>

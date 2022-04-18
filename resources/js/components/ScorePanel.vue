@@ -1,7 +1,7 @@
 <template>
     <div class="popin">
-        <div class="close" @click="gameStore.result_popin = false"></div>
-        <template v-if="round_score">
+        <div class="close" @click="close"></div>
+        <template v-if="gameStore.result_popin_round">
 
             <h2>La carte choisie est :</h2>
 
@@ -16,7 +16,7 @@
 
         <player-list :score="true"></player-list>
 
-        <button class="button dark" @click="gameStore.result_popin = false">
+        <button class="button dark" @click="close">
             Fermer
         </button>
     </div>
@@ -37,6 +37,11 @@
     });
 
     const gameStore = useGameStore();
+
+    const close = () => {
+        gameStore.result_popin = false;
+        gameStore.result_popin_round = false;
+    };
 </script>
 
 
@@ -44,6 +49,7 @@
 .close {
     height: 2rem;
     background: url(../../img/cross.svg) no-repeat right center;
+    cursor: pointer;
 }
 .popin {
     position: fixed;
@@ -60,5 +66,8 @@
 }
 .button {
     margin-top: auto;
+}
+.card {
+    flex-shrink: 0;
 }
 </style>

@@ -21,7 +21,7 @@
             </template>
         </template>
         <transition name="slide">
-            <scorePanel v-if="gameStore.result_popin"></scorePanel>
+            <score-panel v-if="gameStore.result_popin"></score-panel>
         </transition>
     </div>
 </template>
@@ -36,7 +36,7 @@ import Lobby from "../components/Lobby.vue";
 import Player from "../components/Player.vue";
 import Dealer from "../components/Dealer.vue";
 import Propositions from "../components/Propositions.vue";
-import scorePanel from "../components/scorePanel.vue";
+import ScorePanel from "../components/ScorePanel.vue";
 import { connectGeneral, connectPlayer, setupBroadcast } from "../broadcasting";
 
     const route = useRoute();
