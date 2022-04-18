@@ -74,7 +74,10 @@
     };
 
     function addOrRemoveCard(answer) {
-        if (selectedCards.includes(answer)) {
+        if(gameStore.countQuestionHoles == 1) {
+            selectedCards.splice(0, selectedCards.length);
+            selectedCards.push(answer);
+        } else if (selectedCards.includes(answer)) {
             selectedCards.splice(selectedCards.indexOf(answer), 1);
         } else if(gameStore.countQuestionHoles > selectedCards.length) {
             selectedCards.push(answer);
