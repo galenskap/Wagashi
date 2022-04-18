@@ -19,37 +19,11 @@ export const useGameStore = defineStore('gameStore', {
             //         pseudo: "José Luis",
             //         score: 0,
             //     },
-            //     {
-            //         id: 3,
-            //         pseudo: "Juan Carlos",
-            //         score: 0,
-            //     },
-            //     {
-            //         id: 6,
-            //         pseudo: "Alphonse Robichu de ritournelle",
-            //         score: 0,
-            //     },
-            //     {
-            //         id: 4,
-            //         pseudo: "Pantoulge",
-            //         score: 0,
-            //     },
-            //     {
-            //         id: 5,
-            //         pseudo: "Flutadbe",
-            //         score: 0,
-            //     },
             ],
             propositions: {
                 // 1: [{
                 //     player_id: 1,
                 //     text: "chier dans un onsen",
-                //     answer_id: 10,
-                //     order: 1,
-                // }],
-                // 4: [{
-                //     player_id: 4,
-                //     text: "manger du pain",
                 //     answer_id: 10,
                 //     order: 1,
                 // }],

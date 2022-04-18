@@ -7,11 +7,10 @@ use App\Models\Answer;
 use App\Models\Question;
 use App\Models\Proposition;
 use Illuminate\Http\Request;
-use App\Jobs\CheckPropositions;
-use Illuminate\Support\Facades\Log;
 use App\Events\GeneralBroadcastQuestion;
 use App\Events\GeneralBroadcastRoundWinner;
 use App\Events\GeneralBroadcastNewProposition;
+use App\Events\GeneralBroadcastAllPropositions;
 
 class GameController extends Controller
 {
@@ -136,10 +135,14 @@ class GameController extends Controller
             $order++;
         }
 
-        Log::debug("------------GameController----------");
-        Log::debug($game);
+        // Broadcast the information that the player has submitted a proposition
+        GeneralBroadcastNewProposition::dispatch($game->id);
+
         // Check if all players have sent their propositions
-        CheckPropositions::dispatch($game->id);
+        if ($game->areAllPropositionsSent()) {
+            // Broadcast to general all the propositions
+            GeneralBroadcastAllPropositions::dispatch($game->id);
+        }
     }
 
     /**

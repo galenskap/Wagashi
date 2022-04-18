@@ -10,7 +10,6 @@ export function connectGeneral($id) {
 
     window.Echo.private(`general-${$id}`)
     .listen('GeneralBroadcastQuestion', (e) => {
-        console.log(e);
         // set new dealer in gamestore
         gameStore.current_dealer = e.dealer_id;
         // set new question in gamestore
@@ -20,22 +19,18 @@ export function connectGeneral($id) {
     })
     .listen('GeneralBroadcastNewPlayer', (e) => {
         // set new dealer in gamestore
-        console.log(e);
         gameStore.players = e.players;
     })
     .listen('GeneralBroadcastNewProposition', (e) => {
         // replace special players list
-        console.log(e);
         gameStore.playersHavingPropositions = e.playersHavingPropositions;
     })
     .listen('GeneralBroadcastAllPropositions', (e) => {
         // put propositions in the gamestore
-        console.log(e);
         gameStore.propositions = e.propositions;
     })
     .listen('GeneralBroadcastRoundWinner', (e) => {
         // put propositions in the gamestore
-        console.log(e);
         gameStore.previous_turn.question = e.question;
         gameStore.previous_turn.answers = e.answers;
         gameStore.previous_turn.winner = e.winner;
@@ -52,7 +47,6 @@ export function connectPlayer($id) {
 
     window.Echo.private(`player-${$id}`)
     .listen('PlayerCards', (e) => {
-        console.log(e);
         playerStore.answers = e.answers;
     });
 

@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use App\Models\Game;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -28,8 +27,6 @@ class GeneralBroadcastAllPropositions implements ShouldBroadcastNow
     {
         $this->game = Game::find($game_id);
         $this->propositions = $this->game->getAllPropositions();
-        Log::debug("------------GBAllPropositions construct----------");
-        Log::debug($this->game);
     }
 
     /**
@@ -39,8 +36,6 @@ class GeneralBroadcastAllPropositions implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        Log::debug("------------GBAllPropositions broadcaston----------");
-        Log::debug($this->game);
         $channel = 'general-' . $this->game->id;
         return new PrivateChannel($channel);
     }

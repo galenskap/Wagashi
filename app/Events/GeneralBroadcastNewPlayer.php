@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use App\Models\Game;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
