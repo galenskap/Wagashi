@@ -60,6 +60,11 @@ img {
     fill: var(--mint-green);
 }
 
+.logo .logo-text svg {
+    height: 3rem;
+
+}
+
 h2 {
     font-size: 1.8rem;
     font-weight: bold;

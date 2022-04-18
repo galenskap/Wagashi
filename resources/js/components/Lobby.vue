@@ -1,7 +1,7 @@
 <template>
     <player-list :score="false"></player-list>
     <button v-if="playerStore.id == gameStore.lobby_owner" class="button green" :disabled="disabled" @click="launchGame">Lancer la partie</button>
-    <p class="waiting" v-else>On attend que <span class="blush">{{ gameStore.getLobbyOwner.pseudo }}</span> démarre la partie !</p>
+    <p class="waiting" v-else>On attend que <span class="blush">{{ gameStore.getLobbyOwner?.pseudo }}</span> démarre la partie !</p>
     <form @submit.prevent="createGame">
         <div  class="form-group">
             <input ref="shareLink"  type="text" id="name" :value="link">

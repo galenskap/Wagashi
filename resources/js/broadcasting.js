@@ -38,6 +38,7 @@ export function connectGeneral($id) {
         gameStore.players = e.players; // update players list in order to get valid scores
         gameStore.result_popin_round = true;
         gameStore.result_popin = true;
+        gameStore.game_winner = e.game_winner;
     });
 
 }

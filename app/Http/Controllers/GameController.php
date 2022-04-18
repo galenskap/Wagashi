@@ -188,10 +188,10 @@ class GameController extends Controller
             $answer = Answer::find($proposition->answer_id);
             $answers[] = $answer;
         }
-        GeneralBroadcastRoundWinner::dispatch($game->id, $chosenPlayer->id, $question->text, $answers);
 
         //Check if the game is over (score_goal reached)
         if (!$game->isThereAWinner()) {
+            GeneralBroadcastRoundWinner::dispatch($game->id, $chosenPlayer->id, $question->text, $answers);
 
             // if not, discard cards and draw a new question card & dealer
             $game->discardAllPropositions();
@@ -202,6 +202,8 @@ class GameController extends Controller
 
             // Draw enough cards to fill all players hands
             $game->drawPlayersCards();
+        } else {
+            GeneralBroadcastRoundWinner::dispatch($game->id, $chosenPlayer->id, $question->text, $answers, true);
         }
     }
 }

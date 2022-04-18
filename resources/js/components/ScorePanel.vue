@@ -1,6 +1,6 @@
 <template>
     <div class="popin">
-        <div class="close" @click="close"></div>
+        <div class="close" v-if="!gameStore.game_winner" @click="close"></div>
         <template v-if="gameStore.result_popin_round">
 
             <h2>La carte choisie est :</h2>
@@ -9,15 +9,20 @@
                 <augmented-question :question="gameStore.previous_turn.question" :answers="gameStore.previous_turn.answers"></augmented-question>
             </div>
 
-            <h2><span>{{ gameStore.getWinnerPlayer?.pseudo }}</span> gagne le point !</h2>
+            <h2 v-if="gameStore.game_winner"><span>{{ gameStore.getWinnerPlayer?.pseudo }}</span> gagne la partie !</h2>
+            <!--  TODO: Mochi animation ? -->
+            <h2 v-else-if="gameStore.result_popin_round"><span>{{ gameStore.getWinnerPlayer?.pseudo }}</span> gagne la point !</h2>
         </template>
 
         <h2>Scores</h2>
 
         <player-list :score="true"></player-list>
 
-        <button class="button dark" @click="close">
+        <button v-if="!gameStore.game_winner" class="button dark" @click="close">
             Fermer
+        </button>
+        <button v-else class="button blush" @click="resetAll">
+            Une autre partie ?
         </button>
     </div>
 
@@ -28,19 +33,25 @@
     import { useGameStore } from "../stores/gameStore";
     import PlayerList from "../components/PlayerList.vue";
     import AugmentedQuestion from "../components/AugmentedQuestion.vue";
+    import { usePlayerStore } from "../stores/playerStore";
+    import { useRouter } from "vue-router";
 
-    const props = defineProps({
-        round_score: {
-            type: Boolean,
-            default: false,
-        },
-    });
 
     const gameStore = useGameStore();
+    const playerStore = usePlayerStore();
+    const router = useRouter();
 
     const close = () => {
         gameStore.result_popin = false;
         gameStore.result_popin_round = false;
+    };
+
+    const resetAll = () => {
+        playerStore.$reset();
+        gameStore.$reset();
+        localStorage.removeItem('token');
+        router.push("/");
+
     };
 </script>
 
