@@ -47,7 +47,7 @@ class GameController extends Controller
         // Draw a dealer
         $dealer = $game->drawDealer();
 
-        // TBroadcast question card and dealer to players
+        // Broadcast question card and dealer to players
         GeneralBroadcastQuestion::dispatch($game, $questionCard->text, $dealer->id);
 
         return response()->json([
@@ -180,7 +180,8 @@ class GameController extends Controller
             $game->discardAllPropositions();
             $question = $game->drawQuestionCard();
             $dealer = $game->drawDealer();
-            // TODO: broadcast the new question card and dealer to the players
+            // Broadcast the new question card and dealer to the players
+            GeneralBroadcastQuestion::dispatch($game, $question->text, $dealer->id);
 
             // Draw enough cards to fill all players hands
             $game->drawPlayersCards();

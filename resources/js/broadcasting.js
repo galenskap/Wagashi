@@ -10,14 +10,12 @@ export function connectGeneral($id) {
 
     window.Echo.private(`general-${$id}`)
     .listen('GeneralBroadcastQuestion', (e) => {
-        console.log(e);
         // set new dealer in gamestore
         gameStore.current_dealer = e.dealer_id;
         // set new question in gamestore
         gameStore.current_question = e.question;
         // empty propositions in gamestore
         gameStore.propositions = {};
-        log("fini");
     });
 
 }
