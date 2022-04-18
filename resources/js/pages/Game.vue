@@ -33,7 +33,7 @@ import Lobby from "../components/Lobby.vue";
 import Player from "../components/Player.vue";
 import Dealer from "../components/Dealer.vue";
 import Propositions from "../components/Propositions.vue";
-import { connectGeneral, connectPlayer } from "../broadcasting";
+import { connectGeneral, connectPlayer, setupBroadcast } from "../broadcasting";
 
     const route = useRoute();
     const router = useRouter();
@@ -71,6 +71,7 @@ import { connectGeneral, connectPlayer } from "../broadcasting";
                 playerStore.answers = response.data.player.answers;
 
                 // Connect to websocket
+                setupBroadcast();
                 connectGeneral(gameStore.id);
                 connectPlayer(playerStore.id);
 

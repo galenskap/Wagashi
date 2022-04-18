@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\GeneralBroadcastQuestion;
 use App\Models\Game;
 use App\Models\Proposition;
 use Illuminate\Http\Request;
@@ -46,7 +47,8 @@ class GameController extends Controller
         // Draw a dealer
         $dealer = $game->drawDealer();
 
-        // TODO: Broadcast question card and dealer to players
+        // TBroadcast question card and dealer to players
+        GeneralBroadcastQuestion::dispatch($game, $questionCard->text, $dealer->id);
 
         return response()->json([
             'dealer' => $dealer,
