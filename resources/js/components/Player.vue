@@ -91,9 +91,9 @@
         .then(function (response) {
             step.value = 'waiting';
         })
-        // .catch(function (errors) {
-        //     toast(errors.response.data.message);
-        // });
+        .catch(function (errors) {
+            toast(errors.response.data.message);
+        });
     }
 
 </script>

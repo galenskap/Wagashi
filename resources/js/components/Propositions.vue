@@ -13,7 +13,7 @@
     >
             <swiper-slide class="card question-card" v-for="(answer, index) in gameStore.propositions" :key="index">
                 <span v-html="augmentedQuestion(answer)"></span>
-                <button class="button green" v-if="playerStore.id == gameStore.current_dealer" @click="chooseProposition">Choisir</button>
+                <button class="button green" v-if="playerStore.id == gameStore.current_dealer" @click="chooseProposition(answer)">Choisir</button>
             </swiper-slide>
         </swiper>
     </div>
@@ -53,6 +53,23 @@
             swiper.navigation.nextEl.classList.add('hidden');
         }
     }
+
+    // Send dealer choice to the server
+    const chooseProposition = (answer) => {
+        axios.post(process.env.MIX_API_URL + 'send-dealer-choice', {
+            player_id: answer[0].player_id,
+        }, {
+            headers: {
+                Authorization: token,
+            },
+        })
+        .then(function (response) {
+            // console.log("working");
+        })
+        .catch(function (errors) {
+            toast(errors.response.data.message);
+        });
+    };
 </script>
 
 
