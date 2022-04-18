@@ -16,6 +16,10 @@ export function connectGeneral($id) {
         gameStore.current_question = e.question;
         // empty propositions in gamestore
         gameStore.propositions = {};
+    })
+    .listen('GeneralBroadcastNewPlayer', (e) => {
+        // set new dealer in gamestore
+        gameStore.players = e.players;
     });
 
 }

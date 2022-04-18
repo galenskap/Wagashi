@@ -9,25 +9,24 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
-class GeneralBroadcastQuestion implements ShouldBroadcast
+class GeneralBroadcastNewPlayer implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     private $game;
-    public $question;
-    public $dealer_id;
+    public $players;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($game, $question, $dealer_id)
+    public function __construct($game)
     {
         $this->game = $game;
-        $this->question = $question;
-        $this->dealer_id = $dealer_id;
+        $this->players = $game->players;
     }
 
     /**

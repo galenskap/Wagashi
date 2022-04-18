@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-
 use App\Models\Game;
+use App\CustomHelper;
+
 use App\Models\Player;
 use App\Jobs\CardsCreation;
-use App\CustomHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Events\GeneralBroadcastNewPlayer;
+use Illuminate\Support\Facades\Log;
 
 class LobbyController extends Controller
 {
@@ -111,6 +113,9 @@ class LobbyController extends Controller
         $game = Game::where('slug', $request->gameslug)->first();
         // Create a new player
         $player = $this->createPlayer((string)$request->pseudo, $game);
+
+        // Broadcast the player registration to all the players
+        GeneralBroadcastNewPlayer::dispatch($game);
 
         // Return the token
         return response()->json([
