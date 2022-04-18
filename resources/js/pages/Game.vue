@@ -20,6 +20,9 @@
                 </template>
             </template>
         </template>
+        <template v-if="gameStore.result_popin">
+            <rounds-end></rounds-end>
+        </template>
     </div>
 </template>
 
@@ -33,6 +36,7 @@ import Lobby from "../components/Lobby.vue";
 import Player from "../components/Player.vue";
 import Dealer from "../components/Dealer.vue";
 import Propositions from "../components/Propositions.vue";
+import RoundsEnd from "../components/RoundsEnd.vue";
 import { connectGeneral, connectPlayer, setupBroadcast } from "../broadcasting";
 
     const route = useRoute();

@@ -2,19 +2,20 @@
 
 namespace App\Events;
 
+use App\Models\Game;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class GeneralBroadcastQuestion implements ShouldBroadcast
+class GeneralBroadcastQuestion implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    private $game;
+    protected $game;
     public $question;
     public $dealer_id;
 
@@ -23,9 +24,9 @@ class GeneralBroadcastQuestion implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($game, $question, $dealer_id)
+    public function __construct(int $game_id, string $question, int $dealer_id)
     {
-        $this->game = $game;
+        $this->game = Game::find($game_id);
         $this->question = $question;
         $this->dealer_id = $dealer_id;
     }

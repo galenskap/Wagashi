@@ -4,15 +4,20 @@ namespace App\Jobs;
 
 use App\Models\Game;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use App\Events\GeneralBroadcastNewProposition;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use App\Events\GeneralBroadcastAllPropositions;
 
 class CheckPropositions implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    protected $game;
 
     /**
      * Create a new job instance.
@@ -22,6 +27,8 @@ class CheckPropositions implements ShouldQueue
     public function __construct(int $game_id)
     {
         $this->game = Game::find($game_id);
+        Log::debug("------------CheckPropositions construct----------");
+        Log::debug($this->game);
     }
 
     /**
@@ -31,11 +38,16 @@ class CheckPropositions implements ShouldQueue
      */
     public function handle()
     {
-        $nbPlayersPlayed = $this->game->checkNumberOfPropositions();
-        // TODO : Broadcast to general the number of players who played
+        // Broadcast the information that the player has submitted a proposition
+        GeneralBroadcastNewProposition::dispatch($this->game->id);
+        Log::debug("------------CheckPropositions handle----------");
+        Log::debug($this->game);
 
         if ($this->game->areAllPropositionsSent()) {
-            // TODO: broadcast to general the propositions
+            // Broadcast to general all the propositions
+            GeneralBroadcastAllPropositions::dispatch($this->game->id);
+            Log::debug("------------CheckPropositions handle condition----------");
+            Log::debug($this->game);
         }
     }
 }

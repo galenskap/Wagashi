@@ -119,7 +119,7 @@ class Game extends Model
             $playerCards = $player->drawCards();
 
             // Broadcast cards to player
-            PlayerCards::dispatch($player);
+            PlayerCards::dispatch($player->id);
         }
     }
 

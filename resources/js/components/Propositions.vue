@@ -12,7 +12,7 @@
     @slideChange="onSlideChange"
     >
             <swiper-slide class="card question-card" v-for="(answer, index) in gameStore.propositions" :key="index">
-                <span v-html="augmentedQuestion(answer)"></span>
+                <augmented-question :question="gameStore.current_question" :answers="answer"></augmented-question>
                 <button class="button green" v-if="playerStore.id == gameStore.current_dealer" @click="chooseProposition(answer)">Choisir</button>
             </swiper-slide>
         </swiper>
@@ -23,6 +23,7 @@
     import { computed, ref } from "vue";
     import { useGameStore } from "../stores/gameStore";
     import { usePlayerStore } from "../stores/playerStore";
+    import AugmentedQuestion from "../components/AugmentedQuestion.vue";
 
     import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
     // Import Swiper Vue.js components
@@ -36,17 +37,6 @@
     const playerStore = usePlayerStore();
     const modules = [Navigation, Pagination, A11y];
 
-
-
-    const augmentedQuestion = (answers) => {
-        let augmentedQuestion = "";
-        // loop through answers
-        answers.forEach(answer => {
-            // replace first hole in the question
-            augmentedQuestion = gameStore.current_question.replace("##", `<span class="dark">${answer.text}</span>`);
-        });
-        return augmentedQuestion;
-    }
     // Delete  navigation after slide
     const onSlideChange = (swiper) => {
         if(typeof swiper.navigation.nextEl.outerHTML !== '') {

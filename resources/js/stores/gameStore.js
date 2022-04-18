@@ -61,6 +61,13 @@ export const useGameStore = defineStore('gameStore', {
                 // }],
             },
             playersHavingPropositions: [],
+            previous_turn: {
+                question: "",
+                answers: [
+                ],
+                winner: 0,
+            },
+            result_popin: false,
         }
       },
     getters: {
@@ -69,6 +76,9 @@ export const useGameStore = defineStore('gameStore', {
         },
         getLobbyOwner: (state) => {
             return state.players.find(player => player.id === state.lobby_owner);
+        },
+        getWinnerPlayer: (state) => {
+            return state.players.find(player => player.id === state.previous_turn.winner);
         },
         countQuestionHoles: (state) => {
             return state.current_question.match(/##/g).length;

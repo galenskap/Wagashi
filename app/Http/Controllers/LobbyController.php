@@ -115,7 +115,7 @@ class LobbyController extends Controller
         $player = $this->createPlayer((string)$request->pseudo, $game);
 
         // Broadcast the player registration to all the players
-        GeneralBroadcastNewPlayer::dispatch($game);
+        GeneralBroadcastNewPlayer::dispatch($game->id);
 
         // Return the token
         return response()->json([

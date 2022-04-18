@@ -13,7 +13,7 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
     .vue()
-    .browserSync('localhost:8001')
+    // .browserSync('localhost:8001')
     .postCss('node_modules/minireset.css/minireset.css', 'public/css')
     .postCss('resources/css/app.css', 'public/css', [
     ]);

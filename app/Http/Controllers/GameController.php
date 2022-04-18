@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\GeneralBroadcastQuestion;
 use App\Models\Game;
+use App\Models\Answer;
+use App\Models\Question;
 use App\Models\Proposition;
 use Illuminate\Http\Request;
 use App\Jobs\CheckPropositions;
 use Illuminate\Support\Facades\Log;
+use App\Events\GeneralBroadcastQuestion;
+use App\Events\GeneralBroadcastRoundWinner;
+use App\Events\GeneralBroadcastNewProposition;
 
 class GameController extends Controller
 {
@@ -48,7 +52,7 @@ class GameController extends Controller
         $dealer = $game->drawDealer();
 
         // Broadcast question card and dealer to players
-        GeneralBroadcastQuestion::dispatch($game, $questionCard->text, $dealer->id);
+        GeneralBroadcastQuestion::dispatch($game->id, $questionCard->text, $dealer->id);
 
         return response()->json([
             'dealer' => $dealer,
@@ -132,6 +136,8 @@ class GameController extends Controller
             $order++;
         }
 
+        Log::debug("------------GameController----------");
+        Log::debug($game);
         // Check if all players have sent their propositions
         CheckPropositions::dispatch($game->id);
     }
@@ -171,9 +177,17 @@ class GameController extends Controller
         $chosenPlayer->current_score++;
         $chosenPlayer->save();
 
-        // TODO: broadcast the choice to the players
+        // Broadcast the choice to the players
+        $question = Question::find($game->current_question);
+        $propositions = $chosenPlayer->propositions;
+        $answers = [];
+        foreach ($propositions as $proposition) {
+            $answer = Answer::find($proposition->answer_id);
+            $answers[] = $answer;
+        }
+        GeneralBroadcastRoundWinner::dispatch($game->id, $chosenPlayer->id, $question->text, $answers);
 
-        // Check if the game is over (score_goal reached)
+        //Check if the game is over (score_goal reached)
         if (!$game->isThereAWinner()) {
 
             // if not, discard cards and draw a new question card & dealer
@@ -181,7 +195,7 @@ class GameController extends Controller
             $question = $game->drawQuestionCard();
             $dealer = $game->drawDealer();
             // Broadcast the new question card and dealer to the players
-            GeneralBroadcastQuestion::dispatch($game, $question->text, $dealer->id);
+            GeneralBroadcastQuestion::dispatch($game->id, $question->text, $dealer->id);
 
             // Draw enough cards to fill all players hands
             $game->drawPlayersCards();

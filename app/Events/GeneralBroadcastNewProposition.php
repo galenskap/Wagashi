@@ -12,12 +12,12 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class GeneralBroadcastNewPlayer implements ShouldBroadcastNow
+class GeneralBroadcastNewProposition implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     private $game;
-    public $players;
+    public $playersHavingPropositions;
 
     /**
      * Create a new event instance.
@@ -27,14 +27,9 @@ class GeneralBroadcastNewPlayer implements ShouldBroadcastNow
     public function __construct(int $game_id)
     {
         $this->game = Game::find($game_id);
-        $this->players = $this->game->players;
-    }
-
-    public function broadcastWith()
-    {
-        return [
-            'players' => $this->players
-        ];
+        $this->playersHavingPropositions = $this->game->getPlayersHavingSentProposition();
+        Log::debug("------------GBNEWProposition construct----------");
+        Log::debug($this->game);
     }
 
     /**
@@ -44,6 +39,8 @@ class GeneralBroadcastNewPlayer implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
+        Log::debug("------------GBNEWProposition broadcaston----------");
+        Log::debug($this->game);
         $channel = 'general-' . $this->game->id;
         return new PrivateChannel($channel);
     }

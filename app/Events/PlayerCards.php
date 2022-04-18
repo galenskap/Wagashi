@@ -2,15 +2,16 @@
 
 namespace App\Events;
 
+use App\Models\Player;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class PlayerCards implements ShouldBroadcast
+class PlayerCards implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -21,10 +22,10 @@ class PlayerCards implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($player)
+    public function __construct(int $player_id)
     {
-        $this->player = $player;
-        $this->answers = $player->answers;
+        $this->player = Player::find($player_id);
+        $this->answers = $this->player->answers;
     }
 
     /**
