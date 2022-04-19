@@ -9,30 +9,8 @@ export const useGameStore = defineStore('gameStore', {
             current_dealer: 0,
             current_question: "",
             players: [
-            //     {
-            //         id: 1,
-            //         pseudo: "René Coty",
-            //         score: 0,
-            //     },
-            //     {
-            //         id: 2,
-            //         pseudo: "José Luis",
-            //         score: 0,
-            //     },
             ],
             propositions: {
-                // 1: [{
-                //     player_id: 1,
-                //     text: "chier dans un onsen",
-                //     answer_id: 10,
-                //     order: 1,
-                // }],
-                // 2: [{
-                //     player_id: 2,
-                //     text: "les juifs",
-                //     answer_id: 10,
-                //     order: 1,
-                // }],
             },
             playersHavingPropositions: [],
             previous_turn: {
@@ -42,6 +20,8 @@ export const useGameStore = defineStore('gameStore', {
                 winner: 0,
             },
             result_popin: false,
+            result_popin_round: false,
+            game_winner: false,
         }
       },
     getters: {
@@ -63,5 +43,8 @@ export const useGameStore = defineStore('gameStore', {
         getSplittedQuestion: (state) => {
             return state.current_question.split('##');
         },
+        getPlayersByScore: (state) => {
+            return state.players.sort((a, b) => b.current_score - a.current_score);
+        }
     }
 });

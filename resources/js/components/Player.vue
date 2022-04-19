@@ -15,7 +15,7 @@
                 </li>
             </ul>
         </div>
-        <button class="button green" @click="sendProposition" :disabled="disabled">Valider ma réponse</button>
+        <button  class="button green" @click="sendProposition" :disabled="disabled || loading">Valider ma réponse</button>
     </template>
     <template v-if="step == 'waiting'">
         <h2>Merci d'avoir répondu !</h2>
@@ -43,6 +43,7 @@
     const step = ref('proposition');
     const gameStore = useGameStore();
     const playerStore = usePlayerStore();
+    let loading = ref(false);
 
 
     /**
@@ -73,7 +74,10 @@
     };
 
     function addOrRemoveCard(answer) {
-        if (selectedCards.includes(answer)) {
+        if(gameStore.countQuestionHoles == 1) {
+            selectedCards.splice(0, selectedCards.length);
+            selectedCards.push(answer);
+        } else if (selectedCards.includes(answer)) {
             selectedCards.splice(selectedCards.indexOf(answer), 1);
         } else if(gameStore.countQuestionHoles > selectedCards.length) {
             selectedCards.push(answer);
@@ -81,6 +85,7 @@
     }
 
     function sendProposition() {
+        loading.value = true;
         axios.post(process.env.MIX_API_URL + 'send-proposition', {
             answers: getSelectedPropositionsIds(),
         }, {
@@ -90,8 +95,11 @@
         })
         .then(function (response) {
             step.value = 'waiting';
+        loading.value = false;
+
         })
         .catch(function (errors) {
+            loading.value = false;
             toast(errors.response.data.message);
         });
     }

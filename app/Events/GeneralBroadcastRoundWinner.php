@@ -20,13 +20,15 @@ class GeneralBroadcastRoundWinner implements ShouldBroadcastNow
     public $answers;
     public $question;
     public $winner;
+    public $players;
+    public $game_winner;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(int $game_id, int $player_id, $question, $answers)
+    public function __construct(int $game_id, int $player_id, $question, $answers, $game_winner = false)
     {
         $this->game = Game::find($game_id);
         $player = Player::find($player_id);
@@ -34,6 +36,8 @@ class GeneralBroadcastRoundWinner implements ShouldBroadcastNow
         $this->answers = $answers;
         $this->question = $question;
         $this->winner = $player->id;
+        $this->players = $this->game->players;
+        $this->game_winner = $game_winner;
     }
 
     /**

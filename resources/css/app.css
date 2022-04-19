@@ -60,6 +60,11 @@ img {
     fill: var(--mint-green);
 }
 
+.logo .logo-text svg {
+    height: 3rem;
+
+}
+
 h2 {
     font-size: 1.8rem;
     font-weight: bold;
@@ -252,4 +257,27 @@ input[type=number] {
     90%  { transform: scale(1,1)    translateY(-7px); }
     95%  { transform: scale(1,1)    translateY(0); }
     100% { transform: scale(1,1)    translateY(0); }
+}
+
+.slide-enter-active,.slide-leave-active {
+    z-index: 99;
+    transition: transform 0.23s ease-out;
+}
+.slide-leave-from,
+.slide-enter-to {
+    transform: translateY(0%);
+}
+.slide-leave-to,
+.slide-enter-from {  transform: translateY(100%);}
+
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }

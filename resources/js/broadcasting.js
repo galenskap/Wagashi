@@ -16,6 +16,7 @@ export function connectGeneral($id) {
         gameStore.current_question = e.question;
         // empty propositions in gamestore
         gameStore.propositions = {};
+        gameStore.playersHavingPropositions = [];
     })
     .listen('GeneralBroadcastNewPlayer', (e) => {
         // set new dealer in gamestore
@@ -34,7 +35,10 @@ export function connectGeneral($id) {
         gameStore.previous_turn.question = e.question;
         gameStore.previous_turn.answers = e.answers;
         gameStore.previous_turn.winner = e.winner;
+        gameStore.players = e.players; // update players list in order to get valid scores
+        gameStore.result_popin_round = true;
         gameStore.result_popin = true;
+        gameStore.game_winner = e.game_winner;
     });
 
 }

@@ -31,6 +31,7 @@ import LogoImage from "../../img/logo.svg";
 .logo-text {
     max-width: 14rem;
 }
+
 nav {
     display: flex;
     flex-direction: column;
