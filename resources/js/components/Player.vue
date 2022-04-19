@@ -20,9 +20,7 @@
     <template v-if="step == 'waiting'">
         <h2>Merci d'avoir répondu !</h2>
         <p class="sub">Voici une pâtisserie pour patienter.</p>
-        <div class="wagashi">
-            <img :src="Mochi" alt="">
-        </div>
+        <wagashi></wagashi>
         <h2>On attend qui ?</h2>
         <player-list-waiting></player-list-waiting>
     </template>
@@ -33,8 +31,7 @@
     import { useGameStore } from "../stores/gameStore";
     import { usePlayerStore } from "../stores/playerStore";
     import PlayerListWaiting from "../components/PlayerListWaiting.vue";
-    // TODO randomize the wagashi
-    import Mochi from "../../img/mochi.svg";
+    import Wagashi from "../components/Wagashi.vue";
 
     /**
      * State
