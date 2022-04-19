@@ -27,7 +27,7 @@ php artisan migrate
 
 # Restart workers and websockets
 
-sudo supervisorctl restart all
+supervisorctl restart all
 
 
 # Exit maintenance mode
