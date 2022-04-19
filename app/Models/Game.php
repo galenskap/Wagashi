@@ -200,6 +200,9 @@ class Game extends Model
         ->get()
         ->groupBy('player_id');
 
+        // Put the propositions in a random order
+        $propositions = collect($propositions)->shuffle();
+
         return $propositions;
     }
 
@@ -238,5 +241,18 @@ class Game extends Model
             // then, remove all game's propositions
             Proposition::where('game_id', $this->id)->delete();
         }
+    }
+
+    /**
+     * Rebuild pile of answers cards
+     */
+    public function rebuildPile()
+    {
+        $discardedCards = $this->answers()->where('status', 'discarded')->get();
+        foreach ($discardedCards as $answer) {
+            $answer->status = 'pile';
+            $answer->save();
+        }
+        return true;
     }
 }

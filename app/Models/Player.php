@@ -54,12 +54,18 @@ class Player extends Model
         // Get current player number of cards
         $nbCards = $this->answers()->count();
 
-        // TODO: check if there are enough cards left in the pile
-
         // Draw cards if the current player has less than 10 cards
         if ($nbCards < self::MAX_CARDS) {
 
-            $cards = $this->game->answers()->where('status', 'pile')->inRandomOrder()->take(self::MAX_CARDS - $nbCards)->get();
+            // Check if there are enough cards left in the pile
+            $cardsLeft = $this->game->answers()->where('status', 'pile')->count();
+            $cardsToDraw = self::MAX_CARDS - $nbCards;
+            // if not, rebuild the pile of cards with the discarded ones
+            if ($cardsLeft < $cardsToDraw) {
+                $this->game->rebuildPile();
+            }
+
+            $cards = $this->game->answers()->where('status', 'pile')->inRandomOrder()->take($cardsToDraw)->get();
 
             foreach($cards as $card) {
                 $card->status = 'hand';

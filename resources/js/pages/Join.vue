@@ -33,11 +33,17 @@
     import Header from "../components/Header.vue";
     import { useGameStore } from "../stores/gameStore";
     import { useRouter } from "vue-router";
+    import { watch } from 'vue';
 
     /**
      * State
      */
-    const gameslug = ref('');
+    let gameslug = ref('');
+    // automatically remove caps
+    watch(gameslug, async(newGS) => {
+        gameslug.value = newGS.toLowerCase();
+    });
+
     const name = ref('');
     const step = ref(1);
     const gameStore = useGameStore();
