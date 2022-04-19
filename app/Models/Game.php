@@ -242,4 +242,17 @@ class Game extends Model
             Proposition::where('game_id', $this->id)->delete();
         }
     }
+
+    /**
+     * Rebuild pile of answers cards
+     */
+    public function rebuildPile()
+    {
+        $discardedCards = $this->answers()->where('status', 'discarded')->get();
+        foreach ($discardedCards as $answer) {
+            $answer->status = 'pile';
+            $answer->save();
+        }
+        return true;
+    }
 }
