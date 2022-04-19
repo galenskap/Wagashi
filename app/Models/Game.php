@@ -200,6 +200,9 @@ class Game extends Model
         ->get()
         ->groupBy('player_id');
 
+        // Put the propositions in a random order
+        $propositions = collect($propositions)->shuffle();
+
         return $propositions;
     }
 
