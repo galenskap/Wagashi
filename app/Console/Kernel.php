@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\Game;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,7 +16,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            // delete all games that have not been updated in the last 24h
+            Game::where('updated_at', '<', now()->subDay())->delete();
+        })->dailyAt('3:00');
     }
 
     /**
