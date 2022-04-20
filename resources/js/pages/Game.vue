@@ -63,11 +63,8 @@ import { connectGeneral, connectPlayer, setupBroadcast } from "../broadcasting";
             }).then(function (response) {
                 getGameData();
             }).catch(function (errors) {
-                if(errors.response.status == 403) {
-                    router.push("/");
-                }
 
-                if(errors.response.status == 410) {
+                if(errors.response.status == 410 || errors.response.status == 403) {
                     localStorage.removeItem("token");
                     router.push("/");
                 }
