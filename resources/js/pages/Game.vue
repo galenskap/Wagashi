@@ -53,42 +53,66 @@ import { connectGeneral, connectPlayer, setupBroadcast } from "../broadcasting";
             router.push("/join-game");
 
         // if token, get game data and player informations
-        } else {
-
-            axios.get(process.env.MIX_API_URL + 'get-data', {
+        } else  {
+            // Check if the token matches the game, and if the game is still running
+            axios.get(process.env.MIX_API_URL + 'check-game/' + route.params.gameslug,
+            {
                 headers: {
                     Authorization: token,
-                },
-            })
-            .then(function (response) {
-                // put all game data into the gamestore
-                gameStore.id = response.data.game.id;
-                gameStore.lobby_owner = response.data.game.lobby_owner;
-                gameStore.current_dealer = response.data.game.current_dealer ? response.data.game.current_dealer.id : 0;
-                gameStore.current_question = response.data.game.current_question ? response.data.game.current_question.text : '';
-                gameStore.players = response.data.game.players;
-                gameStore.propositions = response.data.propositions || {};
-                gameStore.playersHavingPropositions = response.data.playersHavingPropositions || [];
+                }
+            }).then(function (response) {
+                getGameData();
+            }).catch(function (errors) {
+                if(errors.response.status == 403) {
+                    router.push("/");
+                }
 
-                // put all player data into the playerstore
-                playerStore.id = response.data.player.id;
-                playerStore.answers = response.data.player.answers;
+                if(errors.response.status == 410) {
+                    localStorage.removeItem("token");
+                    router.push("/");
+                }
 
-                // Connect to websocket
-                setupBroadcast();
-                connectGeneral(gameStore.id);
-                connectPlayer(playerStore.id);
-
-                // set loading to false
-                loading.value = false;
-
-            })
-            .catch(function (errors) {
                 toast(errors.response.data.message);
+
             });
+
+
         }
     });
 
+    const getGameData = () =>  {
+        axios.get(process.env.MIX_API_URL + 'get-data', {
+            headers: {
+                Authorization: token,
+            },
+        })
+        .then(function (response) {
+            // put all game data into the gamestore
+            gameStore.id = response.data.game.id;
+            gameStore.lobby_owner = response.data.game.lobby_owner;
+            gameStore.current_dealer = response.data.game.current_dealer ? response.data.game.current_dealer.id : 0;
+            gameStore.current_question = response.data.game.current_question ? response.data.game.current_question.text : '';
+            gameStore.players = response.data.game.players;
+            gameStore.propositions = response.data.propositions || {};
+            gameStore.playersHavingPropositions = response.data.playersHavingPropositions || [];
+
+            // put all player data into the playerstore
+            playerStore.id = response.data.player.id;
+            playerStore.answers = response.data.player.answers;
+
+            // Connect to websocket
+            setupBroadcast();
+            connectGeneral(gameStore.id);
+            connectPlayer(playerStore.id);
+
+            // set loading to false
+            loading.value = false;
+
+        })
+        .catch(function (errors) {
+            toast(errors.response.data.message);
+        });
+    }
     const headTitle = computed(() => {
         return (gameStore.current_dealer == 0 && !loading.value) ? "Lobby" : null;
     });
