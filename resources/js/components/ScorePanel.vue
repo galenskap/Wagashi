@@ -1,17 +1,18 @@
 <template>
-    <div class="popin">
+    <div class="popin" :class="{winner: gameStore.game_winner}">
         <div class="close" v-if="!gameStore.game_winner" @click="close"></div>
         <template v-if="gameStore.result_popin_round">
 
+            <div class="winner_announce" v-if="gameStore.game_winner"><span>{{ gameStore.getWinnerPlayer?.pseudo }}</span> gagne la partie !</div>
             <h2>La carte choisie est :</h2>
 
             <div class="question-card  card">
                 <augmented-question :question="gameStore.previous_turn.question" :answers="gameStore.previous_turn.answers"></augmented-question>
             </div>
 
-            <h2 v-if="gameStore.game_winner"><span>{{ gameStore.getWinnerPlayer?.pseudo }}</span> gagne la partie !</h2>
+
             <!--  TODO: Mochi animation ? -->
-            <h2 v-else-if="gameStore.result_popin_round"><span>{{ gameStore.getWinnerPlayer?.pseudo }}</span> gagne la point !</h2>
+            <h2 v-if="gameStore.result_popin_round && !gameStore.game_winner"><span>{{ gameStore.getWinnerPlayer?.pseudo }}</span> gagne le point !</h2>
         </template>
 
         <h2>Scores</h2>
@@ -74,6 +75,22 @@
     bottom: 0;
     display: flex;
     flex-direction: column;
+}
+.popin.winner {
+    background: var(--champagne-pink);
+}
+.winner_announce {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: var(--champagne-pink);
+    background: var(--raisin-black);
+    padding: 2rem 1rem;
+    border-radius: .25rem;
+}
+
+.winner_announce span {
+    color: var(--mint-green);
 }
 .button {
     margin-top: auto;
