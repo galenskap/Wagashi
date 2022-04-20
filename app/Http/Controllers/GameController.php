@@ -80,6 +80,30 @@ class GameController extends Controller
     }
 
     /**
+     * Check if the token matches a slug and if the game is not finished
+     *
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function checkGame(Request $request)
+    {
+        if($request->game->slug != $request->gameslug) {
+            return response()->json(array(
+                'code' => 403,
+                'message' => 'The token does not match the slug',
+            ), 403);
+        }
+
+        if($request->game->isThereAWinner()) {
+            return response()->json(array(
+                'code' => 410,
+                'message' => 'The game is over',
+            ), 410);
+        }
+    }
+
+    /**
      * Send a player's proposition
      * @param Request $request
      */
