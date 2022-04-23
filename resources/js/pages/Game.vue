@@ -63,17 +63,20 @@ import { connectGeneral, connectPlayer, setupBroadcast } from "../broadcasting";
             }).then(function (response) {
                 getGameData();
             }).catch(function (errors) {
-
-                if(errors.response.status == 410 || errors.response.status == 403) {
+                // if game is over, remove token and go to the homepage (with error display)
+                if(errors.response.status == 410) {
                     localStorage.removeItem("token");
                     router.push("/");
+                    toast(errors.response.data.message);
                 }
-
-                toast(errors.response.data.message);
-
+                // if token does not match the game requested in the url, redirect to the join page game
+                // (no error display)
+                else if(errors.response.status == 403) {
+                    localStorage.removeItem("token");
+                    gameStore.slug = route.params.gameslug;
+                    router.push("/join-game");
+                }
             });
-
-
         }
     });
 

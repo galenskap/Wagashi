@@ -1,5 +1,5 @@
 <template>
-    <player-list :score="false"></player-list>
+    <player-list :score="false" :kick="true"></player-list>
     <button v-if="playerStore.id == gameStore.lobby_owner" class="button green" :disabled="disabled" @click="launchGame">Lancer la partie</button>
     <p class="waiting" v-else>On attend que <span class="blush">{{ gameStore.getLobbyOwner?.pseudo }}</span> démarre la partie !</p>
     <form @submit.prevent="createGame">

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Proposition;
 use Illuminate\Database\Eloquent\Model;
+use App\Events\GeneralBroadcastNewPlayer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Player extends Model
@@ -76,5 +77,30 @@ class Player extends Model
 
         // Return the player's cards
         return $this->answers;
+    }
+
+    public function removePlayerFromGame()
+    {
+        // is he the last player of the game?
+        if ($this->game->players->count() == 1) {
+            // delete the game
+            $this->game->delete();
+        } else {
+            // delete the player:
+            // put his cards back in the pile
+            $this->answers()->update(['owner_id' => null, 'status' => 'pile']);
+            // delete the player
+            $this->delete();
+
+            // check if he is the lobby_owner?
+            if ($this->game->lobby_owner == $this->id) {
+                // if yes, set the next player as the lobby_owner
+                $this->game->lobby_owner = $this->game->players->first()->id;
+                $this->game->save();
+            }
+
+            // broadcast the players list to the general channel
+            GeneralBroadcastNewPlayer::dispatch($this->game->id);
+        }
     }
 }

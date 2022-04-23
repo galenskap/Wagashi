@@ -78,8 +78,13 @@
         })
         .catch(function (errors) {
             // for each error in response.data.errors, display error message
-            for(let error in errors.response.data.errors) {
-                toast(errors.response.data.errors[error][0]);
+            console.log(errors);
+            if (errors.response.data.errors) {
+                for(let error in errors.response.data.errors) {
+                    toast(errors.response.data.errors[error][0]);
+                }
+            } else {
+                toast(errors.response.data.message);
             }
         });
     };

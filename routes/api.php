@@ -44,6 +44,8 @@ Route::group(['middleware' => 'token'], function () {
     // Check if a token matches a slug, and if the game is not finished
     Route::get('/check-game/{gameslug}', [GameController::class, 'checkGame']);
     Route::get('/get-data', [GameController::class, 'getGameData']);
+    Route::get('/disconnect', [GameController::class, 'disconnectPlayer']);
+    Route::post('/kick', [GameController::class, 'kickPlayer']);
     Route::get('/launch-game', [GameController::class, 'launchGame']);
     Route::post('/send-proposition', [GameController::class, 'sendProposition'])->middleware('throttle:1,0.05');
     Route::post('/send-dealer-choice', [GameController::class, 'sendDealerChoice'])->middleware('throttle:1,0.05');
