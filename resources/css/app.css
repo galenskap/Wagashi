@@ -33,6 +33,7 @@ main {
 }
 .back-dark {
     background: var(--raisin-black);
+    color: var(--champagne-pink);
 }
 html,
 body,
