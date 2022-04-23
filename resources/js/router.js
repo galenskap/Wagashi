@@ -11,7 +11,7 @@ const routes = [
     { path: '/new-game', component: NewGame, meta: { class: 'back-dark'}  },
     { path: '/join-game', component: Join, meta: { class: 'back-dark'}  },
     { path: '/game/:gameslug', component: Game },
-    { path: '/:pathMatch(.*)*', component: Error404 },
+    { path: '/:pathMatch(.*)*', component: Error404, meta: { class: 'back-dark'}  },
 ];
 
 const router = createRouter({
