@@ -9,9 +9,11 @@
                 </div>
                 <div class="form-group">
                     <label for="name">Pack de cartes</label>
-                    <select v-model="selectedPack" required>
-                        <option v-for="pack in packs" :key="pack" :value="pack">{{pack}}</option>
-                    </select>
+                    <div class="select-wrapper">
+                        <select v-model="selectedPack" required>
+                            <option v-for="pack in packs" :key="pack" :value="pack">{{pack}}</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="name">Points pour gagner</label>
@@ -94,5 +96,21 @@ header {
 }
 .button:hover {
     box-shadow:inset 0 0 0 2px  var(--mint-green);
+}
+.select-wrapper {
+    position: relative;
+}
+.select-wrapper::after {
+    content: '';
+    width: 2rem;
+    height: 2rem;
+    background-image: url(../../img/next.svg);
+    position: absolute;
+    display: block;
+    transform: rotate(90deg);
+    background-repeat: no-repeat;
+    right: 1rem;
+    top: 1rem;
+    pointer-events: none;
 }
 </style>
