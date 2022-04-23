@@ -1,7 +1,7 @@
 <template>
     <ol>
         <li v-for="(player, index) in gameStore.getPlayersByScore" :key="index">
-            <span :class="{ blush : playerStore.id == player.id, disconnected: player.connected == undefined || player.connected == false }">{{player.pseudo}}</span>
+            <span :class="{ blush : playerStore.id == player.id, disconnected: playerStore.id != player.id && (player.connected == undefined || player.connected == false) }">{{player.pseudo}}</span>
             <span v-if="player.id == gameStore.lobby_owner"><img class="crown" :src="Crown" alt="" /></span>
             <span class="score" v-if="score"> - {{player.current_score}}pts</span>
             <span class="kick" @click="displayModal(player)" v-if="kick && playerStore.id == gameStore.lobby_owner && player.id != playerStore.id"><img :src="Cross" alt="Bannir"></span>
