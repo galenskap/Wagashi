@@ -4,6 +4,7 @@
         <template v-if="gameStore.result_popin_round">
 
             <div class="winner_announce" v-if="gameStore.game_winner"><span>{{ gameStore.getWinnerPlayer?.pseudo }}</span> gagne la partie !</div>
+            <img v-if="gameStore.game_winner" class="victory" :src="Victory" alt="Mochi heureux d'avoir gagné">
             <h2>La carte choisie est :</h2>
 
             <div class="question-card  card">
@@ -41,7 +42,7 @@
     import { usePlayerStore } from "../stores/playerStore";
     import { useRouter } from "vue-router";
     import { resetAll } from "../stores/helper";
-
+    import Victory from "../../img/victory.svg";
 
     const gameStore = useGameStore();
     const playerStore = usePlayerStore();
@@ -118,5 +119,9 @@
 }
 .card {
     flex-shrink: 0;
+}
+.victory {
+    max-width: 400px;
+    margin-bottom: 1rem;
 }
 </style>
