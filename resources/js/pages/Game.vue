@@ -37,7 +37,7 @@ import Player from "../components/Player.vue";
 import Dealer from "../components/Dealer.vue";
 import Propositions from "../components/Propositions.vue";
 import ScorePanel from "../components/ScorePanel.vue";
-import { connectGeneral, connectPlayer, setupBroadcast } from "../broadcasting";
+import { connectGeneral, connectPlayer, setupBroadcast, connectPresence } from "../broadcasting";
 
     const route = useRoute();
     const router = useRouter();
@@ -103,6 +103,7 @@ import { connectGeneral, connectPlayer, setupBroadcast } from "../broadcasting";
             // Connect to websocket
             setupBroadcast();
             connectGeneral(gameStore.id);
+            connectPresence(gameStore.id);
             connectPlayer(playerStore.id);
 
             // set loading to false
@@ -110,6 +111,7 @@ import { connectGeneral, connectPlayer, setupBroadcast } from "../broadcasting";
 
         })
         .catch(function (errors) {
+            console.log(errors);
             toast(errors.response.data.message);
         });
     }
