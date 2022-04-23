@@ -26,4 +26,10 @@ Broadcast::channel('player-{playerId}', function ($player, $playerId) {
     return ($player->id == $playerId);
 }, ['middleware' => ['token']]);
 
+Broadcast::channel('presence-{gameId}', function ($player, $gameId) {
+    if ($player->game_id == $gameId) {
+        return ['id' => $player->id, 'name' => $player->pseudo];
+    }
+}, ['middleware' => ['token']]);
+
 // Use request token to check if the player belongs to the game

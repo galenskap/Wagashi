@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Proposition;
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use App\Events\GeneralBroadcastNewPlayer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Player extends Model
 {
     use HasFactory;
+    use Authenticatable;
 
     const MAX_CARDS = 10;
 

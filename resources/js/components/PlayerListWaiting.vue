@@ -1,7 +1,7 @@
 <template>
     <ul>
         <li v-for="(player, index) in playerList" :key="index">
-            <span>{{ player.pseudo }}</span>
+            <span :class="{disconnected: player.connected == undefined || player.connected == false}">{{ player.pseudo }}</span>
             <span v-if="gameStore.playersHavingPropositions.includes(player.id)"><img class="check" :src="Check" alt="" /></span>
         </li>
     </ul>
@@ -41,4 +41,7 @@ li {
     margin-left: 0.5rem;
 }
 
+.disconnected {
+    color: var(--nickel);
+}
 </style>

@@ -61,6 +61,25 @@ export function connectPlayer($id) {
 
 }
 
+export function connectPresence($id) {
+
+    const gameStore = useGameStore();
+
+    window.Echo.join(`presence-${$id}`)
+    .here((players) => {
+        gameStore.connectPlayers(players);
+    })
+    .joining((player) => {
+        gameStore.connectPlayer(player);
+    })
+    .leaving((player) => {
+        gameStore.disconnectPlayer(player);
+    })
+    .error((error) => {
+        console.error(error);
+    });
+
+}
 
 export function setupBroadcast() {
 

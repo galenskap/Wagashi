@@ -35,7 +35,9 @@ export const useGameStore = defineStore('gameStore', {
             return state.players.find(player => player.id === state.previous_turn.winner);
         },
         countQuestionHoles: (state) => {
-            return state.current_question.match(/##/g).length;
+            if(state.current_question !== "") {
+                return state.current_question.match(/##/g).length;
+            }
         },
         getHTMLQuestion: (state) => {
             return state.current_question.replace(/##/g, '<span class="question-hole"></span>');
@@ -45,6 +47,19 @@ export const useGameStore = defineStore('gameStore', {
         },
         getPlayersByScore: (state) => {
             return state.players.sort((a, b) => b.current_score - a.current_score);
+        }
+    },
+    actions: {
+        connectPlayers: function (players) {
+            for (const player of players) {
+                this.connectPlayer(player)
+            }
+        },
+        connectPlayer: function(player) {
+            this.players.find(p => p.id === player.id).connected = true;
+        },
+        disconnectPlayer: function(player) {
+            this.players.find(p => p.id === player.id).connected = false;
         }
     }
 });
