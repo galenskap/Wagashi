@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Game;
 use App\Models\Answer;
+use App\Models\Player;
 use App\Models\Question;
+use App\Events\PlayerKick;
 use App\Models\Proposition;
 use Illuminate\Http\Request;
 use App\Events\GeneralBroadcastQuestion;
+use App\Events\GeneralBroadcastNewPlayer;
 use App\Events\GeneralBroadcastRoundWinner;
 use App\Events\GeneralBroadcastNewProposition;
 use App\Events\GeneralBroadcastAllPropositions;
-use App\Events\GeneralBroadcastNewPlayer;
 
 class GameController extends Controller
 {
@@ -242,24 +244,53 @@ class GameController extends Controller
     {
         $player = $request->player;
 
-        // is he the last player of the game?
-        if ($player->game->players->count() == 1) {
-            // delete the game
-            $player->game->delete();
-        } else {
-            // TODO : is he the lobby_owner?
-            // delete the player:
-            // put his cards back in the pile
-            $player->answers()->update(['owner_id' => null, 'status' => 'pile']);
-            // delete the player
-            $player->delete();
-            // broadcast the players list to the general channel
-            GeneralBroadcastNewPlayer::dispatch($request->game->id);
-        }
+        $player->removePlayerFromGame();
 
         return response()->json(array(
             'code' => 200,
-            'message' => 'Player has been removed',
+            'message' => 'You have been disconnected',
         ), 200);
+    }
+
+
+    /**
+     * Handle a player kick
+     *
+     * @param Request $request
+     * @return json
+     */
+    public function kickPlayer(Request $request)
+    {
+        // is the requester the lobby_owner ?
+        $player = $request->player;
+        $game = $request->game;
+        if ($player->id != $game->lobby_owner) {
+            return response()->json(array(
+                'code' => 403,
+                'message' => 'You are not the lobby owner',
+            ), 403);
+
+        }
+        else if($game->current_dealer > 0 && $game->players()->count() <= 3) {
+            return response()->json(array(
+                'code' => 403,
+                'message' => 'You cannot kick the last player',
+            ), 403);
+        }
+        else {
+            // validate fields
+            $request->validate([
+                'player_id' => 'required|exists:players,id',
+            ]);
+            $playerToKick = Player::find($request->player_id);
+            PlayerKick::dispatch($playerToKick->id);
+            $playerToKick->removePlayerFromGame();
+
+
+            return response()->json(array(
+                'code' => 200,
+                'message' => 'Player has been kicked',
+            ), 200);
+        }
     }
 }

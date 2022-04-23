@@ -1,5 +1,6 @@
 import Echo from 'laravel-echo';
 import { useGameStore } from './stores/gameStore';
+import { resetAll } from './stores/helper';
 import { usePlayerStore } from './stores/playerStore';
 
 
@@ -52,6 +53,10 @@ export function connectPlayer($id) {
     window.Echo.private(`player-${$id}`)
     .listen('PlayerCards', (e) => {
         playerStore.answers = e.answers;
+    })
+    .listen('PlayerKick', (e) => {
+        toast('Vous vous êtes fait bannir de la partie !');
+        resetAll();
     });
 
 }

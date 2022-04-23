@@ -17,10 +17,10 @@
 
         <h2>Scores</h2>
 
-        <player-list :score="true"></player-list>
+        <player-list :score="true" :kick="true"></player-list>
 
         <div class="bottom-actions">
-            <span class="quit" @click="disconnect">Quitter la partie &times;</span>
+            <span v-if="!gameStore.result_popin_round && !gameStore.result_game_winner" class="quit" @click="disconnect">Quitter la partie &times;</span>
 
             <button v-if="!gameStore.game_winner" class="button dark" @click="close">
                 Fermer
@@ -40,6 +40,7 @@
     import AugmentedQuestion from "../components/AugmentedQuestion.vue";
     import { usePlayerStore } from "../stores/playerStore";
     import { useRouter } from "vue-router";
+    import { resetAll } from "../stores/helper";
 
 
     const gameStore = useGameStore();
@@ -51,15 +52,8 @@
         gameStore.result_popin_round = false;
     };
 
-    const resetAll = () => {
-        playerStore.$reset();
-        gameStore.$reset();
-        localStorage.removeItem('token');
-        router.push("/");
-    };
 
     const disconnect = () => {
-        console.log("disconnect");
         // disconnect from the game
         axios.get(process.env.MIX_API_URL + 'disconnect',
         {
