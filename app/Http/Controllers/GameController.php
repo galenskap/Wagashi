@@ -11,6 +11,7 @@ use App\Events\GeneralBroadcastQuestion;
 use App\Events\GeneralBroadcastRoundWinner;
 use App\Events\GeneralBroadcastNewProposition;
 use App\Events\GeneralBroadcastAllPropositions;
+use App\Events\GeneralBroadcastNewPlayer;
 
 class GameController extends Controller
 {
@@ -229,5 +230,36 @@ class GameController extends Controller
         } else {
             GeneralBroadcastRoundWinner::dispatch($game->id, $chosenPlayer->id, $question->text, $answers, true);
         }
+    }
+
+    /**
+     * Handle a player disconnection
+     *
+     * @param Request $request
+     * @return json
+     */
+    public function disconnectPlayer(Request $request)
+    {
+        $player = $request->player;
+
+        // is he the last player of the game?
+        if ($player->game->players->count() == 1) {
+            // delete the game
+            $player->game->delete();
+        } else {
+            // TODO : is he the lobby_owner?
+            // delete the player:
+            // put his cards back in the pile
+            $player->answers()->update(['owner_id' => null, 'status' => 'pile']);
+            // delete the player
+            $player->delete();
+            // broadcast the players list to the general channel
+            GeneralBroadcastNewPlayer::dispatch($request->game->id);
+        }
+
+        return response()->json(array(
+            'code' => 200,
+            'message' => 'Player has been removed',
+        ), 200);
     }
 }
