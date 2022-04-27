@@ -197,6 +197,7 @@ class Game extends Model
         ->join('answers', 'currentpropositions.answer_id', '=', 'answers.id')
         ->where('currentpropositions.game_id', $this->id)
         ->select('currentpropositions.player_id', 'answers.text', 'currentpropositions.answer_id', 'currentpropositions.order')
+        ->orderBy('currentpropositions.order', 'asc')
         ->get()
         ->groupBy('player_id');
 
